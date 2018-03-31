@@ -356,7 +356,21 @@ namespace ClassLibraryNeuralNetworks
             return CalcError(X, Y);
         }
 
+        public void StartLayes(NeuralNW NET)
+        {
+            for (int l = 0; l < NET.Layers.Length; l++)
+            {
+                for (int i = 0; i < NET.Layers[l].countX; i++)
+                {
+                    for (int j = 0; j < NET.Layers[l].countY; j++)
+                    {
+                        //NET.Layers[l][i,j] = Gamma()
+                    }
+                }
+                //NET.Layers[i]
+            }
 
+        }
 
 
         //нелинейная активационная функция СИГМОИД
@@ -403,6 +417,11 @@ namespace ClassLibraryNeuralNetworks
             for (int i = 0; i < k; i++)
                 result += a + b[i];
                 return result;
+        }
+
+        public int getHidenCount
+        {
+            get { return Layers[0].countY; }
         }
 
         //Я ЗАКАНЧИВАЮ

@@ -47,7 +47,39 @@ namespace NewNN007
             }
             
             return result;
+        }
 
+        public static double[][] getInput(ArrayList TS)
+        {
+            int xp = 0;
+            double[][] list = new double[TS.Count][];
+            foreach (double[] vector in TS)
+            {
+                
+                list[xp] = new double[vector.Length];
+                for (int i = 0; i < list.Length; i++)
+                {
+                    list[xp][i] = vector[i];
+                }
+                xp++;
+            }
+            return list;
+        }
+
+        public static double[][] getOutput(ArrayList TS)
+        {
+            int xp = 0;
+            double[][] list = new double[TS.Count][];
+            foreach (double[] vector in TS)
+            {
+
+                list[xp] = new double[1];
+                
+                list[xp][0] = vector[vector.Length-1];
+                
+                xp++;
+            }
+            return list;
         }
     }
 }

@@ -7,3 +7,12 @@ c:\users\green\documents\visual studio 2012\Projects\NewNN007\NewNN007\bin\Debug
 c:\users\green\documents\visual studio 2012\Projects\NewNN007\NewNN007\bin\Debug\NewNN007.pdb
 c:\users\green\documents\visual studio 2012\Projects\NewNN007\NewNN007\obj\Debug\NewNN007.exe
 c:\users\green\documents\visual studio 2012\Projects\NewNN007\NewNN007\obj\Debug\NewNN007.pdb
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.exe.config
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.exe
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.pdb
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.exe
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.pdb
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.csprojResolveAssemblyReference.cache
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Form1.resources
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Properties.Resources.resources
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.csproj.GenerateResource.Cache
