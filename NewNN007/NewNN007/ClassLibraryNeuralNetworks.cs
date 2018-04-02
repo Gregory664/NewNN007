@@ -91,22 +91,27 @@ namespace ClassLibraryNeuralNetworks
     // Класс - нейронная сеть
     public class NeuralNW
     {
-        LayerNW[] Layers;
-        
+        LayerNW[] Layers;       
 
         
         int countLayers = 0, countX, countY;
         double[][] NETOUT;  // NETOUT[countLayers + 1][]
         double[][] DELTA;   // NETOUT[countLayers    ][]
-        double[][] atributes;
+        double[][] Atributes;
 
-        public void ActivateAtributClasses(int countOfAtributes)
+        private void ActivateAtributClasses(int numberOfDecisionClasses,int countOfAtributes)
         {
-            atributes = new double[countOfAtributes][];
-            for (int i = 0; i < atributes.Length; i++)
+            Atributes = new double[numberOfDecisionClasses][];
+            for (int i = 0; i < Atributes.Length; i++)
             {
-                atributes[i] = new double[1] { 0 };
+                Atributes[i] = new double[countOfAtributes];
             }
+            
+        }
+
+        public void getAverageAtributes(double[][] TS)
+        {
+            
         }
 
         // Конструкторы
@@ -156,6 +161,20 @@ namespace ClassLibraryNeuralNetworks
         public NeuralNW(String FileName)
         {
             OpenNW(FileName);
+        }
+
+        
+       
+        /// <summary>
+        /// Открывает НС, а так инициализирует массив atributes, который содержит отношение КПР - Среднее атрибута
+        /// </summary>
+        /// <param name="FileName">Путь к НС</param>
+        /// <param name="numberOfDecisionClasses">Количество классов принятие решений</param>
+        /// <param name="CountOfAtributes">Количество атрибутов</param>
+        public NeuralNW(String FileName,int numberOfDecisionClasses, int CountOfAtributes)
+        {
+            OpenNW(FileName);
+            ActivateAtributClasses(numberOfDecisionClasses, CountOfAtributes);
         }
 
         // Открывает НС
@@ -372,7 +391,7 @@ namespace ClassLibraryNeuralNetworks
             return CalcError(X, Y);
         }
 
-        public void StartLayes(NeuralNW NET, double[][] input,double[][] output, double[] decision, double[][] atributes)
+        public void StartLayes(NeuralNW NET, double[][] input, double[][] output, double[] decision, double[][] atributes)
         {
             
             for (int l = 0; l < NET.Layers.Length; l++)

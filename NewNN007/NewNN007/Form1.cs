@@ -15,10 +15,11 @@ namespace NewNN007
 {
     public partial class Form1 : Form
     {
+        
         NeuralNW NET;
         String path = "Network.nw";
-        
-        public ArrayList TS = new ArrayList();       
+
+        double[][] TS;    
        
 
         public Form1()
@@ -35,6 +36,7 @@ namespace NewNN007
         private void LoadTs_Click(object sender, EventArgs e)
         {
             TS = Functional.getTS("TS.txt");
+            //double[][] mass = Functional.getInput(TS);
                      
             
         }
@@ -43,8 +45,8 @@ namespace NewNN007
         {
             try
             {
-                NET = new NeuralNW(path);
-                NET.ActivateAtributClasses(4);
+                NET = new NeuralNW(path, 3, 4);
+                NET.getAverageAtributes(TS);
             }
             catch (Exception ex)
             {
@@ -66,7 +68,7 @@ namespace NewNN007
                 for (currPos = 0; currPos < NET.getHidenCount; currPos++)
                 {                   
                     //string s;
-                    //NET.StartLayes(NET, input, output, decision, atributes);
+                    //NET.StartLayes(NET, input, output, decision, Atributes);
                     
                 }
             }

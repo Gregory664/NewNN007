@@ -10,23 +10,38 @@ namespace NewNN007
 {
     public static class Functional
     {
-        public static ArrayList getTS(String path)
+        public static double[][] getTS(String path)
         {
             String text;
-            ArrayList list = new ArrayList();
-            StreamReader sr = new StreamReader(path, Encoding.UTF8);
-            while ((text = sr.ReadLine()) != null)
+            double[][] TS;
+            int count = 0;
+            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
             {
-                string[] oneLine = text.Split(';');
-                double[] tmp = new double[oneLine.Length];
-                for (int i = 0; i < tmp.Length; i++)
+                while ((text = sr.ReadLine()) != null)
                 {
-                    tmp[i] = Convert.ToDouble(oneLine[i]);
+                    count++;
                 }
-                list.Add(tmp);
+            }
+            TS = new double[count][];
+
+            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
+            {
+                int count2 = 0, i = 0;
+
+                while ((text = sr.ReadLine()) != null)
+                {
+                    string[] tmp = text.Split(';');
+                    TS[count2] = new double[tmp.Length];
+                    for (int j = 0; j < tmp.Length; j++)
+                    {
+                        TS[count2][j] = Double.Parse(tmp[j]);
+                    }
+                    count2++;
+                }
             }
 
-            return list;
+            
+            return TS;
         }
 
         public static ArrayList getAtributes(ArrayList TS)
