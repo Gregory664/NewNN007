@@ -81,5 +81,23 @@ namespace NewNN007
             }
             return list;
         }
+
+        public static double[][] convertListToDouble(ArrayList list)
+        {
+            double[][] result = new double[list.Count][];
+            int x = 0;
+            foreach (double[] vector in list)
+            {
+                result[x] = new double[vector.Length];
+                for (int i = 0; i < result[x].Length; i++)
+                {
+                    result[x][i] = vector[i];
+                }
+            }
+            return result;
+
+            
+
+        }
     }
 }

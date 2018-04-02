@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Collections;
 
 
 namespace ClassLibraryNeuralNetworks
@@ -85,13 +86,28 @@ namespace ClassLibraryNeuralNetworks
 
     }
 
+    
+
     // Класс - нейронная сеть
     public class NeuralNW
     {
         LayerNW[] Layers;
+        
+
+        
         int countLayers = 0, countX, countY;
         double[][] NETOUT;  // NETOUT[countLayers + 1][]
         double[][] DELTA;   // NETOUT[countLayers    ][]
+        double[][] atributes;
+
+        public void ActivateAtributClasses(int countOfAtributes)
+        {
+            atributes = new double[countOfAtributes][];
+            for (int i = 0; i < atributes.Length; i++)
+            {
+                atributes[i] = new double[1] { 0 };
+            }
+        }
 
         // Конструкторы
         /* Создает полносвязанную сеть из 1 слоя. 
@@ -356,8 +372,9 @@ namespace ClassLibraryNeuralNetworks
             return CalcError(X, Y);
         }
 
-        public void StartLayes(NeuralNW NET)
+        public void StartLayes(NeuralNW NET, double[][] input,double[][] output, double[] decision, double[][] atributes)
         {
+            
             for (int l = 0; l < NET.Layers.Length; l++)
             {
                 for (int i = 0; i < NET.Layers[l].countX; i++)

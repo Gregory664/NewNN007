@@ -20,8 +20,8 @@ namespace NewNN007
         
         public ArrayList TS = new ArrayList();
         public double[] decision = new double[3] { 1.0, 2.0, 3.0 };
-        public ArrayList atributes = new ArrayList();
-        public double[][] input, output;
+        public ArrayList atrib = new ArrayList();
+        public double[][] input, output, atributes;
 
         public Form1()
         {
@@ -37,9 +37,10 @@ namespace NewNN007
         private void LoadTs_Click(object sender, EventArgs e)
         {
             TS = Functional.getTS("TS.txt");
-            atributes = Functional.getAtributes(TS);
+            atrib = Functional.getAtributes(TS);
             input = Functional.getInput(TS);
             output = Functional.getOutput(TS);
+            atributes = Functional.convertListToDouble(atrib);
            
             
         }
@@ -49,6 +50,7 @@ namespace NewNN007
             try
             {
                 NET = new NeuralNW(path);
+                NET.ActivateAtributClasses(4);
             }
             catch (Exception ex)
             {
@@ -69,8 +71,9 @@ namespace NewNN007
                 kErr = 0;
                 for (currPos = 0; currPos < NET.getHidenCount; currPos++)
                 {
-                    string s;
-                    NET.StartLayes(NET);
+                    
+                    //string s;
+                    //NET.StartLayes(NET, input, output, decision, atributes);
                     
                 }
             }
