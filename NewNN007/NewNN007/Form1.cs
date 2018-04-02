@@ -45,7 +45,7 @@ namespace NewNN007
         {
             try
             {
-                NET = new NeuralNW(path, 3, 4);
+                NET = new NeuralNW(path, 3, 3);
                 NET.getAverageAtributes(TS);
             }
             catch (Exception ex)

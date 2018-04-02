@@ -111,7 +111,38 @@ namespace ClassLibraryNeuralNetworks
 
         public void getAverageAtributes(double[][] TS)
         {
+            int countAtributes = TS[0].Length;
+            int firstAtribut = 0;
+            int secondAtribut = 0;
+            int thirdAtribut = 0;
+
+            //Этим говнокодом мы проверяем сколько элементов выборки соответсвует каждому классу принятия решений
+            for (int i = 0; i < TS.Length; i++)
+            {
+                if (TS[i][countAtributes - 1] == 1.0) firstAtribut++;
+                if (TS[i][countAtributes - 1] == 2.0) secondAtribut++;
+                if (TS[i][countAtributes - 1] == 3.0) thirdAtribut++;
+            }
             
+            //А тут находим среднее
+            for (int i = 0; i < TS.Length; i++)
+            {
+                //проверка соответствия выборки к 1 классу
+                if (TS[i][countAtributes - 1] == 1.0)
+                {
+                    for (int j = 0; j < TS[i].Length - 1; j++) Atributes[0][j] += TS[i][j] / firstAtribut;
+                }
+                //проверка соответствия выборки к 2 классу
+                if (TS[i][countAtributes - 1] == 2.0)
+                {
+                    for (int j = 0; j < TS[i].Length - 1; j++) Atributes[1][j] += TS[i][j] / secondAtribut;
+                }
+                //проверка соответствия выборки к 3 классу
+                if (TS[i][countAtributes - 1] == 3.0)
+                {
+                    for (int j = 0; j < TS[i].Length - 1; j++) Atributes[2][j] += TS[i][j] / thirdAtribut;
+                }
+            }
         }
 
         // Конструкторы
