@@ -36,8 +36,7 @@ namespace NewNN007
         private void LoadTs_Click(object sender, EventArgs e)
         {
             TS = Functional.getTS("TS.txt");
-            //double[][] mass = Functional.getInput(TS);
-                     
+                                
             
         }
 
