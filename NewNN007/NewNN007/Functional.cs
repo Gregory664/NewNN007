@@ -44,26 +44,7 @@ namespace NewNN007
             return TS;
         }
 
-        public static ArrayList getAtributes(ArrayList TS)
-        {
-            ArrayList result = new ArrayList();
-
-            for (int i = 0; i < 3; i++)
-            {
-                double[] tmp = new double[TS.Count];
-                int j = 0;
-                foreach (double[] vector in TS)
-                {
-                    tmp[j] = vector[i];
-                    j++;
-                }
-                result.Add(tmp);
-                
-            }
-            
-            return result;
-        }
-
+       
         public static double[][] getInput(ArrayList TS)
         {
             int xp = 0;

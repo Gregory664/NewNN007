@@ -7,3 +7,6 @@ C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.cs
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Form1.resources
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Properties.Resources.resources
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.csproj.GenerateResource.Cache
+C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.exe.config
+C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.exe
+C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.pdb
