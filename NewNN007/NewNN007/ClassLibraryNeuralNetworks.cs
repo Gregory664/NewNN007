@@ -408,8 +408,6 @@ namespace ClassLibraryNeuralNetworks
 
             }
 
-            
-
             // Вычисляем выход сети
             GetOUT(X);
 
@@ -463,34 +461,47 @@ namespace ClassLibraryNeuralNetworks
                 {
                     for (int i = 0; i < Layers[k].countX; i++)
                     {
-                        znam += Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]);
-                        Layers[k][i, j] += (Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]))/znam;
+                        //Вызов Гамма-Корреляции
+
+                     //   znam += Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]);
+                     //  Layers[k][i, j] += (Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]))/znam;
                     }
                 }
             }
 
         }
 
-        //корреляция ПОКА ПУСТАЯ, ИТОГО ТУТ ПРОСТО СУММА, НАДО МЕНЯТЬ
-        public double Gamma(double a, double b)
+        //гамма-корреляция 
+        //посылаем два нейрона с двумя значениями - на вход и на выход для каждого нейрона
+        public double Gamma(double [][] NeuronOne, double [][]NeuronTwo)
         {
-            double result = a+b;
-            return result;
-        }
-        //странная сумма для весов ИЗ АЛГОРИТМА
-        public double SUM(double a, double[] b, int k)
-        {
-            double result = 0;
-            for (int i = 0; i < k; i++)
-                result += a + b[i];
-                return result;
-        }
+            //счетчики согласованных и несогласованных пар соответственно.
+            int countS = 0;
+            int countD = 0;
 
-        public int getHidenCount
-        {
-            get { return Layers[0].countY; }
-        }
+            //если значения на вход и значение на выход одного нейрона одновременно больше или равно
+            //значениям на вход и на выход другого нейрона - пара согласована
+            //увеличиваем счетчик согласованных пар
+            if (NeuronOne[0][0] >= NeuronTwo[1][0] && NeuronOne[0][1] >= NeuronTwo[1][1])
+                countS++;
+            else 
+            {
+                //если значения на вход и значение на выход одного нейрона одновременно меньше
+                //значениям на вход и на выход другого нейрона - пара согласована
+                //увеличиваем счетчик согласованных пар
+                if (NeuronOne[0][0] < NeuronTwo[1][0] && NeuronOne[0][1] < NeuronTwo[1][1])
+                    countS++;
 
+                //иначе - пара не согласована
+                //увеличиваем счетчик несогласованных пар
+                else
+                    countD++;
+            }
+
+            //мера Гамма Л.Гудмена и Е.Краскала
+            double gamma = (countS - countD) / (countS + countD);
+            return gamma;
+        }     
         //Я ЗАКАНЧИВАЮ
 
 
