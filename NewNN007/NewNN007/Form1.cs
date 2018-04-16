@@ -48,10 +48,8 @@ namespace NewNN007
                 //NET.getAverageAtributes(TS);
                 //NET.ActivateErrorMass(TS);
                 NET.GetMeanAtributes(TS);
-                for (int i = 0; i < TS.Length; i++)
-                {
-                    NET.Learn(TS[i]);
-                }
+                
+                NET.Learn(TS);
             }
             catch (Exception ex)
             {

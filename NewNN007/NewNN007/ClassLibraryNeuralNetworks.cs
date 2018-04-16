@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace ClassLibraryNeuralNetworks
@@ -130,6 +131,7 @@ namespace ClassLibraryNeuralNetworks
         double[][] NETOUT;  // NETOUT[countLayers + 1][]
         double[][] DELTA;   // NETOUT[countLayers    ][]       
         double[] ERRORS;
+        Dictionary<double, double[]> PROBABILITY;
         
         ///Ниже представлены наши методы
 
@@ -144,7 +146,30 @@ namespace ClassLibraryNeuralNetworks
         {
             OpenNW(FileName);
             ActivateClasses(numberOfDecisionClasses, CountOfAtributes);
+            ActivateProbability(numberOfDecisionClasses);
             
+            
+        }
+
+        /// <summary>
+        /// Происходит заполнение словаря вероятностей PROBABILITY
+        /// </summary>
+        /// <param name="numberOfDecisionClasses"></param>
+        private void ActivateProbability(int numberOfDecisionClasses)
+        {
+            PROBABILITY = new Dictionary<double,double[]>();
+            double maxProbability = (double)(1 - (numberOfDecisionClasses * 0.01) + 0.01);
+
+            //Цикл по кол-ву классов принятия решений
+            for (int i = 0; i < numberOfDecisionClasses; i++)
+            {                
+                //массив вероятностей для класса, заполняется автоматически
+                double[] prob = new double[numberOfDecisionClasses];
+                for (int j = 0; j < prob.Length; j++) { prob[j] = 0.01; }
+                prob[i] = maxProbability;
+                double key = (double) (i + 1);
+                PROBABILITY.Add(key, prob);
+            }
         }
 
         /// <summary>
@@ -167,6 +192,9 @@ namespace ClassLibraryNeuralNetworks
         /// <param name="TS">Обучающая выборка</param>
         public void GetMeanAtributes(double[][] TS)
         {
+            //Инициализируем массив ошибок
+            ActivateErrors(TS.Length);
+
             for (int i = 0; i < TS.Length; i++)
             {
                 ///Берем последнее значение(выход) из i-ой строчки выборки,
@@ -193,6 +221,15 @@ namespace ClassLibraryNeuralNetworks
                 }
             }
         }
+
+        /// <summary>
+        /// Инициализируется массив ошибок
+        /// </summary>
+        /// <param name="length"></param>
+        private void ActivateErrors(int length)
+        {
+            ERRORS = new double[length];
+        }
     
         public double Gamma(double[][] TS)
         {
@@ -205,16 +242,23 @@ namespace ClassLibraryNeuralNetworks
             return result;
         }
 
-        public void Learn(double[] TS)
+        /// <summary>
+        /// Наш метод обучения
+        /// </summary>
+        /// <param name="TS">Обучающая выборка</param>
+        public void Learn(double[][] TS)
         {
-            double[] ts = new double[TS.Length - 1];
-
-            for (int i = 0; i < ts.Length; i++)
+            for (int i = 0; i < TS.Length; i++)
             {
-                ts[i] = TS[i];
-            }
-            GetOUT(TS);
+                double[] ts = new double[TS[0].Length - 1];
 
+                for (int j = 0; j < ts.Length; j++)
+                {
+                    ts[j] = TS[i][j];
+                }
+                GetOUT(TS[i]);//рассчитываем выход сети для текущей выборки
+                ERRORS[i] = CalcError(TS[i]);//рассчитываем ошибку для текущей выборки
+            }
         }
 
         public void ActivateErrorMass(double[][] TS)
@@ -225,15 +269,21 @@ namespace ClassLibraryNeuralNetworks
         public double CalcError(double[] TS)
         {
             double kErr = 0;
+            double[] Y = new double[Classes.Length];
+            foreach (KeyValuePair<double, double[]> item in PROBABILITY)
+            {
+                if (item.Key.Equals(TS[TS.Length - 1]))
+                {
+                    Y = item.Value;
+                    break;
+                }
+            }
 
-            //double[] Y = new double[MeansAtributes.Length];
-            //if (TS[TS.Length - 1] == 1.0)
-            //{
-            //    Y[0] = 0.99;
-            //    Y[1] = 0.01;
-            //    Y[2] = 0.01;
-
-            //}
+            for (int i = 0; i < Y.Length; i++)
+            {
+                kErr += (Y[i] - NETOUT[countLayers][i]);
+            }
+            
             return kErr;
 
         }
