@@ -86,64 +86,159 @@ namespace ClassLibraryNeuralNetworks
 
     }
 
+    /// <summary>
+    /// Структура классов принятия решений
+    /// </summary>
+    public class ClassesNW
+    {
+        /// <summary>
+        /// Массив средних значений атрибутов для класса принятия решений
+        /// </summary>
+        public double[] MeansAtributes;
+
+        public int CountOfSamples;
+
+        public int GetCountOfAtributes
+        {
+            get
+            {
+                return MeansAtributes.Length;
+            }
+        }
+
+        /// <summary>
+        /// Инициализирует массив средних значений атрибутов
+        /// </summary>
+        /// <param name="countOfAtributes">Количество атрибутов</param>
+        public ClassesNW(int countOfAtributes)
+        {
+            MeansAtributes = new double[countOfAtributes];
+            CountOfSamples = 0;
+        }      
+    }
+  
+
     
 
     // Класс - нейронная сеть
     public class NeuralNW
     {
-        LayerNW[] Layers;       
-
+        LayerNW[] Layers;
+        ClassesNW[] Classes;
         
         int countLayers = 0, countX, countY;
         double[][] NETOUT;  // NETOUT[countLayers + 1][]
-        double[][] DELTA;   // NETOUT[countLayers    ][]
-        double[][] Atributes;
+        double[][] DELTA;   // NETOUT[countLayers    ][]       
+        double[] ERRORS;
+        
+        ///Ниже представлены наши методы
 
-        private void ActivateAtributClasses(int numberOfDecisionClasses,int countOfAtributes)
+        /// <summary>
+        /// Открывает НС, а так же инициализирует структуру Classes, 
+        /// которая равна количеству классов принятия решений
+        /// </summary>
+        /// <param name="FileName">Путь к НС</param>
+        /// <param name="numberOfDecisionClasses">Количество классов принятие решений</param>
+        /// <param name="GetCountOfAtributes">Количество атрибутов</param>
+        public NeuralNW(String FileName, int numberOfDecisionClasses, int CountOfAtributes)
         {
-            Atributes = new double[numberOfDecisionClasses][];
-            for (int i = 0; i < Atributes.Length; i++)
-            {
-                Atributes[i] = new double[countOfAtributes];
-            }
+            OpenNW(FileName);
+            ActivateClasses(numberOfDecisionClasses, CountOfAtributes);
             
         }
 
-        public void getAverageAtributes(double[][] TS)
+        /// <summary>
+        /// Инициализирует структуру Classes
+        /// </summary>
+        /// <param name="numberOfDecisionClasses">Количество классов принятие решений</param>
+        /// <param name="GetCountOfAtributes">Количество атрибутов</param>
+        private void ActivateClasses(int numberOfDecisionClasses, int CountOfAtributes)
         {
-            int countAtributes = TS[0].Length;
-            int firstAtribut = 0;
-            int secondAtribut = 0;
-            int thirdAtribut = 0;
-
-            //Этим говнокодом мы проверяем сколько элементов выборки соответсвует каждому классу принятия решений
-            for (int i = 0; i < TS.Length; i++)
+            Classes = new ClassesNW[numberOfDecisionClasses];
+            for (int i = 0; i < numberOfDecisionClasses; i++)
             {
-                if (TS[i][countAtributes - 1] == 1.0) firstAtribut++;
-                if (TS[i][countAtributes - 1] == 2.0) secondAtribut++;
-                if (TS[i][countAtributes - 1] == 3.0) thirdAtribut++;
+                Classes[i] = new ClassesNW(CountOfAtributes);
             }
-            
-            //А тут находим среднее
+        }
+
+        /// <summary>
+        /// Заполняем структуру Classes средними значениями атрибутов
+        /// </summary>
+        /// <param name="TS">Обучающая выборка</param>
+        public void GetMeanAtributes(double[][] TS)
+        {
             for (int i = 0; i < TS.Length; i++)
             {
-                //проверка соответствия выборки к 1 классу
-                if (TS[i][countAtributes - 1] == 1.0)
+                ///Берем последнее значение(выход) из i-ой строчки выборки,
+                ///конвентируем в intЮ вычитаем 1
+                ///и получаем индекс структуры Classes =)
+                int numberOfClass = Convert.ToInt32(TS[i][TS[i].Length - 1]) - 1;
+
+                //Увеличиваем счетчик выборки, принадлежащей к классу
+                Classes[numberOfClass].CountOfSamples++;
+
+                int CountOfAtributes = Classes[0].GetCountOfAtributes;
+                for (int x = 0; x < CountOfAtributes; x++)
                 {
-                    for (int j = 0; j < TS[i].Length - 1; j++) Atributes[0][j] += TS[i][j] / firstAtribut;
-                }
-                //проверка соответствия выборки к 2 классу
-                if (TS[i][countAtributes - 1] == 2.0)
+                    Classes[numberOfClass].MeansAtributes[x] += TS[i][x];
+                }                
+            }
+
+            //Проходимся по структуре Classes, находим среднее атрубутов
+            for (int i = 0; i < Classes.Length; i++)
+            {
+                for (int j = 0; j < Classes[i].GetCountOfAtributes; j++)
                 {
-                    for (int j = 0; j < TS[i].Length - 1; j++) Atributes[1][j] += TS[i][j] / secondAtribut;
-                }
-                //проверка соответствия выборки к 3 классу
-                if (TS[i][countAtributes - 1] == 3.0)
-                {
-                    for (int j = 0; j < TS[i].Length - 1; j++) Atributes[2][j] += TS[i][j] / thirdAtribut;
+                    Classes[i].MeansAtributes[j] /= Classes[i].CountOfSamples;
                 }
             }
         }
+    
+        public double Gamma(double[][] TS)
+        {
+            double result = 0.0;
+            for (int i = 0; i < Layers.Length; i++)
+            {
+
+            }
+
+            return result;
+        }
+
+        public void Learn(double[] TS)
+        {
+            double[] ts = new double[TS.Length - 1];
+
+            for (int i = 0; i < ts.Length; i++)
+            {
+                ts[i] = TS[i];
+            }
+            GetOUT(TS);
+
+        }
+
+        public void ActivateErrorMass(double[][] TS)
+        {
+            ERRORS = new double[TS.Length];
+        }
+
+        public double CalcError(double[] TS)
+        {
+            double kErr = 0;
+
+            //double[] Y = new double[MeansAtributes.Length];
+            //if (TS[TS.Length - 1] == 1.0)
+            //{
+            //    Y[0] = 0.99;
+            //    Y[1] = 0.01;
+            //    Y[2] = 0.01;
+
+            //}
+            return kErr;
+
+        }
+
+        ///Ниже методы, уже присутствующие в библиотеке!!!
 
         // Конструкторы
         /* Создает полносвязанную сеть из 1 слоя. 
@@ -192,22 +287,8 @@ namespace ClassLibraryNeuralNetworks
         public NeuralNW(String FileName)
         {
             OpenNW(FileName);
-        }
-
-        
+        }  
        
-        /// <summary>
-        /// Открывает НС, а так инициализирует массив atributes, который содержит отношение КПР - Среднее атрибута
-        /// </summary>
-        /// <param name="FileName">Путь к НС</param>
-        /// <param name="numberOfDecisionClasses">Количество классов принятие решений</param>
-        /// <param name="CountOfAtributes">Количество атрибутов</param>
-        public NeuralNW(String FileName,int numberOfDecisionClasses, int CountOfAtributes)
-        {
-            OpenNW(FileName);
-            ActivateAtributClasses(numberOfDecisionClasses, CountOfAtributes);
-        }
-
         // Открывает НС
         public void OpenNW(String FileName)
         {
@@ -311,6 +392,8 @@ namespace ClassLibraryNeuralNetworks
             return 0.5 * kErr;
         }
 
+        
+
         /* Обучает сеть, изменяя ее весовые коэффициэнты. 
            X, Y - обучающая пара. kLern - скорость обучаемости
            В качестве результата метод возвращает ошибку 0.5(Y-outY)^2 */
@@ -365,149 +448,152 @@ namespace ClassLibraryNeuralNetworks
 
         //Я НАЧИНАЮ
         //МОЙ АЛГОРИТСМ
-        public double ByesLernNW(double[] X, double[] Y, double mean)
-        {
-            //Layers - это веса, меняющиеся в предыдущем методе
-            double O;  // Вход нейрона
-            double[] g = new double[Y.Length]; //ДИСКРЕТНАЯ ПЕРЕМЕННАЯ СКРЫТОГО НЕЙРОНА П.6
-            double[] fun; //МАССИВ ЗНАЧЕНИЙ ФУНКЦИИ АКТИВАЦИИ НА КАЖДОМ ШАГЕ
-            double sum = 0; 
-            double[] U; //линейный дискриминант для каждого скрытого слоя
-            int[][] y = new int[Y.Length][]; //МЕТКА КЛАССА ПРИНЯТИЯ РЕШЕНИЙ
-            y[0] = new int[Y.Length];
+        //public double ByesLernNW(double[] X, double[] Y, double mean)
+        //{
+        //    //Layers - это веса, меняющиеся в предыдущем методе
+        //    double O;  // Вход нейрона
+        //    double[] g = new double[Y.Length]; //ДИСКРЕТНАЯ ПЕРЕМЕННАЯ СКРЫТОГО НЕЙРОНА П.6
+        //    double[] fun; //МАССИВ ЗНАЧЕНИЙ ФУНКЦИИ АКТИВАЦИИ НА КАЖДОМ ШАГЕ
+        //    double sum = 0; 
+        //    double[] U; //линейный дискриминант для каждого скрытого слоя
+        //    int[][] y = new int[Y.Length][]; //МЕТКА КЛАССА ПРИНЯТИЯ РЕШЕНИЙ
+        //    y[0] = new int[Y.Length];
 
-            for (int k = countLayers - 1; k >= 0; k--) //цикл по скрытым слоям
-            {
-                U = new double[Layers[k].countY];
-                fun = new double[Layers[k].countY];
+        //    for (int k = countLayers - 1; k >= 0; k--) //цикл по скрытым слоям
+        //    {
+        //        U = new double[Layers[k].countY];
+        //        fun = new double[Layers[k].countY];
 
-                for (int j = 0; j < Layers[k].countY; j++) //цикл по нейронам скрытого слоя
-                {
+        //        for (int j = 0; j < Layers[k].countY; j++) //цикл по нейронам скрытого слоя
+        //        {
 
-                    for (int i = 0; i < X.Length; i++)                    
-                    {   //3 пункт. линейный дискриминант
-                        U[j] += X[i] * (Layers[k][i, j]) / ((X[k] - mean) * (X[k] - mean));
-                    }
+        //            for (int i = 0; i < X.Length; i++)                    
+        //            {   //3 пункт. линейный дискриминант
+        //                U[j] += X[i] * (Layers[k][i, j]) / ((X[k] - mean) * (X[k] - mean));
+        //            }
 
-                    fun[j] = func(U[j]);
-                    for (int i = 0; i < X.Length; i++)
-                        sum += fun[i] - max(fun, i);
+        //            fun[j] = func(U[j]);
+        //            for (int i = 0; i < X.Length; i++)
+        //                sum += fun[i] - max(fun, i);
                         
-                    //5п. метка уj
-                    for (int i = Y.Length; i > 0; i--) //цикл по классам принятия решений
-                    {
-                        for (int p = 0; p < Y.Length; j++)
-                        {
-                            if ((i + p) == Y.Length) y[i][p] = 1;
-                            else y[i][j] = 0;
-                        }
-                        //6п.
-                        g[i] = (Math.Exp(fun[j])-max(fun, i))/sum;
-                    }
-                }
+        //            //5п. метка уj
+        //            for (int i = Y.Length; i > 0; i--) //цикл по классам принятия решений
+        //            {
+        //                for (int p = 0; p < Y.Length; j++)
+        //                {
+        //                    if ((i + p) == Y.Length) y[i][p] = 1;
+        //                    else y[i][j] = 0;
+        //                }
+        //                //6п.
+        //                g[i] = (Math.Exp(fun[j])-max(fun, i))/sum;
+        //            }
+        //        }
 
-            }
+        //    }
 
-            // Вычисляем выход сети
-            GetOUT(X);
+        //    // Вычисляем выход сети
+        //    GetOUT(X);
 
-            for (int j = 0; j < Layers[countLayers - 1].countY; j++)
-            {
-                O = NETOUT[countLayers][j];
+        //    for (int j = 0; j < Layers[countLayers - 1].countY; j++)
+        //    {
+        //        O = NETOUT[countLayers][j];
                 
-            }
+        //    }
 
-            return CalcError(X, Y);
-        }
+        //    return CalcError(X, Y);
+        //}
 
-        public void StartLayes(NeuralNW NET, double[][] input, double[][] output, double[] decision, double[][] atributes)
-        {
+        //public void StartLayes(NeuralNW NET, double[][] input, double[][] output, double[] decision, double[][] atributes)
+        //{
             
-            for (int l = 0; l < NET.Layers.Length; l++)
-            {
-                for (int i = 0; i < NET.Layers[l].countX; i++)
-                {
-                    for (int j = 0; j < NET.Layers[l].countY; j++)
-                    {
-                        //NET.Layers[l][i,j] = Gamma()
-                    }
-                }
-                //NET.Layers[i]
-            }
+        //    for (int l = 0; l < NET.Layers.Length; l++)
+        //    {
+        //        for (int i = 0; i < NET.Layers[l].countX; i++)
+        //        {
+        //            for (int j = 0; j < NET.Layers[l].countY; j++)
+        //            {
+        //                //NET.Layers[l][i,j] = Gamma()
+        //            }
+        //        }
+        //        //NET.Layers[i]
+        //    }
 
-        }
+        //}
 
 
         //нелинейная активационная функция СИГМОИД
-        public double func(double Uj)
-        {
-            double result = 1/(1 + Math.Exp(Uj));
-            return result;
-        }
+        //public double func(double Uj)
+        //{
+        //    double result = 1/(1 + Math.Exp(Uj));
+        //    return result;
+        //}
         //maximum
-        public double max(double[] mu, int i)
-        {
-            System.Array.Sort(mu);
-            double max = mu[mu.Length - 1];
-            return max;
-        }
+        //public double max(double[] mu, int i)
+        //{
+        //    System.Array.Sort(mu);
+        //    double max = mu[mu.Length - 1];
+        //    return max;
+        //}
         //ЗДЕСЬ ДОЛЖНЫ ВЕСА ПОМЕНЯТЬСЯ
-        public void weight(double[] X, double[] Y, double[] E, double mean)
-        {
-            double znam = 0;
-            for (int k = countLayers - 1; k >= 0; k--)
-            {
-                for (int j = 0; j < Layers[k].countY; j++)
-                {
-                    for (int i = 0; i < Layers[k].countX; i++)
-                    {
-                        //Вызов Гамма-Корреляции
+        //public void weight(double[] X, double[] Y, double[] E, double mean)
+        //{
+        //    double znam = 0;
+        //    for (int k = countLayers - 1; k >= 0; k--)
+        //    {
+        //        for (int j = 0; j < Layers[k].countY; j++)
+        //        {
+        //            for (int i = 0; i < Layers[k].countX; i++)
+        //            {
+        //                //Вызов Гамма-Корреляции
 
-                     //   znam += Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]);
-                     //  Layers[k][i, j] += (Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]))/znam;
-                    }
-                }
-            }
+        //             //   znam += Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]);
+        //             //  Layers[k][i, j] += (Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]))/znam;
+        //            }
+        //        }
+        //    }
 
-        }
+        //}
 
         //гамма-корреляция 
         //посылаем два нейрона с двумя значениями - на вход и на выход для каждого нейрона
-        public double Gamma(double [][] NeuronOne, double [][]NeuronTwo)
-        {
-            //счетчики согласованных и несогласованных пар соответственно.
-            int countS = 0;
-            int countD = 0;
+        //public double Gamma(double [][] NeuronOne, double [][]NeuronTwo)
+        //{
+        //    //счетчики согласованных и несогласованных пар соответственно.
+        //    int countS = 0;
+        //    int countD = 0;
 
-            //если значения на вход и значение на выход одного нейрона одновременно больше или равно
-            //значениям на вход и на выход другого нейрона - пара согласована
-            //увеличиваем счетчик согласованных пар
-            if (NeuronOne[0][0] >= NeuronTwo[1][0] && NeuronOne[0][1] >= NeuronTwo[1][1])
-                countS++;
-            else 
-            {
-                //если значения на вход и значение на выход одного нейрона одновременно меньше
-                //значениям на вход и на выход другого нейрона - пара согласована
-                //увеличиваем счетчик согласованных пар
-                if (NeuronOne[0][0] < NeuronTwo[1][0] && NeuronOne[0][1] < NeuronTwo[1][1])
-                    countS++;
+        //    //если значения на вход и значение на выход одного нейрона одновременно больше или равно
+        //    //значениям на вход и на выход другого нейрона - пара согласована
+        //    //увеличиваем счетчик согласованных пар
+        //    if (NeuronOne[0][0] >= NeuronTwo[1][0] && NeuronOne[0][1] >= NeuronTwo[1][1])
+        //        countS++;
+        //    else 
+        //    {
+        //        //если значения на вход и значение на выход одного нейрона одновременно меньше
+        //        //значениям на вход и на выход другого нейрона - пара согласована
+        //        //увеличиваем счетчик согласованных пар
+        //        if (NeuronOne[0][0] < NeuronTwo[1][0] && NeuronOne[0][1] < NeuronTwo[1][1])
+        //            countS++;
 
-                //иначе - пара не согласована
-                //увеличиваем счетчик несогласованных пар
-                else
-                    countD++;
-            }
+        //        //иначе - пара не согласована
+        //        //увеличиваем счетчик несогласованных пар
+        //        else
+        //            countD++;
+        //    }
 
-            //мера Гамма Л.Гудмена и Е.Краскала
-            double gamma = (countS - countD) / (countS + countD);
-            return gamma;
-        }     
+        //    //мера Гамма Л.Гудмена и Е.Краскала
+        //    double gamma = (countS - countD) / (countS + countD);
+        //    return gamma;
+        //}     
         //Я ЗАКАНЧИВАЮ
 
 
 
 
         // Свойства. Возвращает число входов и выходов сети
+
+        
+
         public int GetX
         {
             get { return countX; }

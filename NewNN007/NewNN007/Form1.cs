@@ -45,7 +45,13 @@ namespace NewNN007
             try
             {
                 NET = new NeuralNW(path, 3, 3);
-                NET.getAverageAtributes(TS);
+                //NET.getAverageAtributes(TS);
+                //NET.ActivateErrorMass(TS);
+                NET.GetMeanAtributes(TS);
+                for (int i = 0; i < TS.Length; i++)
+                {
+                    NET.Learn(TS[i]);
+                }
             }
             catch (Exception ex)
             {
@@ -64,12 +70,12 @@ namespace NewNN007
             while (kErr > kErrNorm)
             {
                 kErr = 0;
-                for (currPos = 0; currPos < NET.getHidenCount; currPos++)
-                {                   
-                    //string s;
-                    //NET.StartLayes(NET, input, output, decision, Atributes);
+                //for (currPos = 0; currPos < NET.getHidenCount; currPos++)
+                //{                   
+                //    //string s;
+                //    //NET.StartLayes(NET, input, output, decision, MeansAtributes);
                     
-                }
+                //}
             }
         }
 
