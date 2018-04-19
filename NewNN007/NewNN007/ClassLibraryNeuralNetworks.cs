@@ -87,7 +87,7 @@ namespace ClassLibraryNeuralNetworks
 
     }
 
-    /// <summary>
+    /// <summary> 
     /// Структура классов принятия решений
     /// </summary>
     public class ClassesNW
@@ -117,8 +117,35 @@ namespace ClassLibraryNeuralNetworks
             CountOfSamples = 0;
         }      
     }
-  
 
+    public class Gamma
+    {
+        
+        public List<double[]> GammaValues = new List<double[]>();
+
+        double[] GammaOfErrors;
+        
+
+        public Gamma(LayerNW[] Layers)
+        {
+            for (int i = 0; i < Layers.Length; i++)
+			{
+                GammaValues.Add(new double[Layers[i].countX]);
+			}
+        }
+
+        public Gamma(int count)
+        {
+            GammaOfErrors = new double[4];
+        }
+
+          
+        
+    }
+
+   
+  
+   
     
 
     // Класс - нейронная сеть
@@ -126,6 +153,7 @@ namespace ClassLibraryNeuralNetworks
     {
         LayerNW[] Layers;
         ClassesNW[] Classes;
+        Gamma[] GammaNeuron;
         
         int countLayers = 0, countX, countY;
         double[][] NETOUT;  // NETOUT[countLayers + 1][]
@@ -149,6 +177,20 @@ namespace ClassLibraryNeuralNetworks
             ActivateProbability(numberOfDecisionClasses);
             
             
+            
+        }
+
+        /// <summary>
+        /// Инициализирует структуру Gamma
+        /// </summary>
+        /// <param name="CountOfTs">Количество строк обучающей выборки</param>
+        public void ActivateGammaStruct(int CountOfTs)
+        {
+            GammaNeuron = new Gamma[CountOfTs];
+            for (int i = 0; i < CountOfTs; i++)
+            {
+                GammaNeuron[i] = new Gamma(Layers);
+            }
         }
 
         /// <summary>
@@ -186,6 +228,8 @@ namespace ClassLibraryNeuralNetworks
             }
         }
 
+        
+
         /// <summary>
         /// Заполняем структуру Classes средними значениями атрибутов
         /// </summary>
@@ -197,7 +241,7 @@ namespace ClassLibraryNeuralNetworks
 
             for (int i = 0; i < TS.Length; i++)
             {
-                ///Берем последнее значение(выход) из i-ой строчки выборки,
+                ///Берем последнее значение(выход) из strTS-ой строчки выборки,
                 ///конвентируем в intЮ вычитаем 1
                 ///и получаем индекс структуры Classes =)
                 int numberOfClass = Convert.ToInt32(TS[i][TS[i].Length - 1]) - 1;
@@ -243,22 +287,79 @@ namespace ClassLibraryNeuralNetworks
         }
 
         /// <summary>
+        /// Нахождение корреляции по методу Л.Гудмена и Е.Краскала
+        ///
+        /// </summary>
+        /// <param name="pairs">Массив пар</param>
+        /// <returns></returns>
+        public double CalcGamma(double[][] pairs)
+        {
+            //счетчики согласованных и несогласованных пар соответственно.
+            int countS = 0;
+            int countD = 0;
+
+            int count = 0;
+            for (int i = 0; i < pairs.Length - 1; i++)
+            {
+                
+                for (int j = 0 + count; j < pairs.Length - 1; j++)
+                {
+                    if (pairs[i][0] >= pairs[j + 1][0] && pairs[i][1] >= pairs[j + 1][1]) { countS++; }
+                    else if (pairs[i][0] <= pairs[j + 1][0] && pairs[i][1] <= pairs[j + 1][1]) { countS++; }
+                    else countD++;
+                } 
+                count++;
+                
+            }
+            ////мера Гамма Л.Гудмена и Е.Краскала
+            double a = countS - countD;
+            double b = countS + countD;
+            double gamma = a / b;
+            return gamma;            
+
+        }   
+
+        /// <summary>
         /// Наш метод обучения
         /// </summary>
         /// <param name="TS">Обучающая выборка</param>
         public void Learn(double[][] TS)
         {
-            for (int i = 0; i < TS.Length; i++)
+
+            for (int strTS = 0; strTS < TS.Length; strTS++)
             {
                 double[] ts = new double[TS[0].Length - 1];
 
                 for (int j = 0; j < ts.Length; j++)
                 {
-                    ts[j] = TS[i][j];
+                    ts[j] = TS[strTS][j];
                 }
-                GetOUT(TS[i]);//рассчитываем выход сети для текущей выборки
-                ERRORS[i] = CalcError(TS[i]);//рассчитываем ошибку для текущей выборки
+                GetOUT(TS[strTS]);//рассчитываем выход сети для текущей выборки
+                ERRORS[strTS] = CalcError(TS[strTS]);//рассчитываем ошибку для текущей выборки
+
+                //делаем проход по всем уровням для нахождения корреляции
+                for (int k = 0; k < CountLayers; k++)
+                {
+                    //Layers[k].countX - кол-во входных нейронов на текущем уровне (k)
+                    for (int i = 0; i < Layers[k].countX; i++)
+                    {
+                        //массив пар, равен кол-ву выходных нейронов на текущем уровне
+                        double[][] mass = new double[Layers[k].countY][];
+                        //проход по каждый вх нейрон (i) -> каждый вых нейрон (j) на текущем уровне
+                        for (int j = 0; j < Layers[k].countY; j++)
+                        {
+                            mass[j] = new double[2];//размер 2 - первое число это вход * вес связи, второе - выход нейрона на той же связи
+                            mass[j][0] = NETOUT[k][i] * Layers[k][i, j];//вход * вес связи
+                            mass[j][1] = NETOUT[k + 1][j];//выход нейрона на той же связи
+                        }
+                        //рассчет корреляции для каждого вх нейрона на текущем уровне
+                        GammaNeuron[strTS].GammaValues[k][i] = CalcGamma(mass);
+
+                    }
+                }
+                
             }
+            int x = 0;
         }
 
         public void ActivateErrorMass(double[][] TS)
@@ -517,25 +618,25 @@ namespace ClassLibraryNeuralNetworks
         //        for (int j = 0; j < Layers[k].countY; j++) //цикл по нейронам скрытого слоя
         //        {
 
-        //            for (int i = 0; i < X.Length; i++)                    
+        //            for (int strTS = 0; strTS < X.Length; strTS++)                    
         //            {   //3 пункт. линейный дискриминант
-        //                U[j] += X[i] * (Layers[k][i, j]) / ((X[k] - mean) * (X[k] - mean));
+        //                U[j] += X[strTS] * (Layers[k][strTS, j]) / ((X[k] - mean) * (X[k] - mean));
         //            }
 
         //            fun[j] = func(U[j]);
-        //            for (int i = 0; i < X.Length; i++)
-        //                sum += fun[i] - max(fun, i);
+        //            for (int strTS = 0; strTS < X.Length; strTS++)
+        //                sum += fun[strTS] - max(fun, strTS);
                         
         //            //5п. метка уj
-        //            for (int i = Y.Length; i > 0; i--) //цикл по классам принятия решений
+        //            for (int strTS = Y.Length; strTS > 0; strTS--) //цикл по классам принятия решений
         //            {
         //                for (int p = 0; p < Y.Length; j++)
         //                {
-        //                    if ((i + p) == Y.Length) y[i][p] = 1;
-        //                    else y[i][j] = 0;
+        //                    if ((strTS + p) == Y.Length) y[strTS][p] = 1;
+        //                    else y[strTS][j] = 0;
         //                }
         //                //6п.
-        //                g[i] = (Math.Exp(fun[j])-max(fun, i))/sum;
+        //                g[strTS] = (Math.Exp(fun[j])-max(fun, strTS))/sum;
         //            }
         //        }
 
@@ -558,14 +659,14 @@ namespace ClassLibraryNeuralNetworks
             
         //    for (int l = 0; l < NET.Layers.Length; l++)
         //    {
-        //        for (int i = 0; i < NET.Layers[l].countX; i++)
+        //        for (int strTS = 0; strTS < NET.Layers[l].countX; strTS++)
         //        {
         //            for (int j = 0; j < NET.Layers[l].countY; j++)
         //            {
-        //                //NET.Layers[l][i,j] = Gamma()
+        //                //NET.Layers[l][strTS,j] = Gamma()
         //            }
         //        }
-        //        //NET.Layers[i]
+        //        //NET.Layers[strTS]
         //    }
 
         //}
@@ -578,7 +679,7 @@ namespace ClassLibraryNeuralNetworks
         //    return result;
         //}
         //maximum
-        //public double max(double[] mu, int i)
+        //public double max(double[] mu, int strTS)
         //{
         //    System.Array.Sort(mu);
         //    double max = mu[mu.Length - 1];
@@ -592,12 +693,12 @@ namespace ClassLibraryNeuralNetworks
         //    {
         //        for (int j = 0; j < Layers[k].countY; j++)
         //        {
-        //            for (int i = 0; i < Layers[k].countX; i++)
+        //            for (int strTS = 0; strTS < Layers[k].countX; strTS++)
         //            {
         //                //Вызов Гамма-Корреляции
 
-        //             //   znam += Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]);
-        //             //  Layers[k][i, j] += (Gamma((X[i] - mean), E[k]) * Gamma((X[i] - mean), Y[j]))/znam;
+        //             //   znam += Gamma((X[strTS] - mean), E[k]) * Gamma((X[strTS] - mean), Y[j]);
+        //             //  Layers[k][strTS, j] += (Gamma((X[strTS] - mean), E[k]) * Gamma((X[strTS] - mean), Y[j]))/znam;
         //            }
         //        }
         //    }
@@ -606,35 +707,7 @@ namespace ClassLibraryNeuralNetworks
 
         //гамма-корреляция 
         //посылаем два нейрона с двумя значениями - на вход и на выход для каждого нейрона
-        //public double Gamma(double [][] NeuronOne, double [][]NeuronTwo)
-        //{
-        //    //счетчики согласованных и несогласованных пар соответственно.
-        //    int countS = 0;
-        //    int countD = 0;
-
-        //    //если значения на вход и значение на выход одного нейрона одновременно больше или равно
-        //    //значениям на вход и на выход другого нейрона - пара согласована
-        //    //увеличиваем счетчик согласованных пар
-        //    if (NeuronOne[0][0] >= NeuronTwo[1][0] && NeuronOne[0][1] >= NeuronTwo[1][1])
-        //        countS++;
-        //    else 
-        //    {
-        //        //если значения на вход и значение на выход одного нейрона одновременно меньше
-        //        //значениям на вход и на выход другого нейрона - пара согласована
-        //        //увеличиваем счетчик согласованных пар
-        //        if (NeuronOne[0][0] < NeuronTwo[1][0] && NeuronOne[0][1] < NeuronTwo[1][1])
-        //            countS++;
-
-        //        //иначе - пара не согласована
-        //        //увеличиваем счетчик несогласованных пар
-        //        else
-        //            countD++;
-        //    }
-
-        //    //мера Гамма Л.Гудмена и Е.Краскала
-        //    double gamma = (countS - countD) / (countS + countD);
-        //    return gamma;
-        //}     
+       
         //Я ЗАКАНЧИВАЮ
 
 
@@ -670,7 +743,7 @@ namespace ClassLibraryNeuralNetworks
 
             for (int i = 0; i < lastLayer; i++)
             {
-                // размерность столбца проходящего через i-й слой
+                // размерность столбца проходящего через strTS-й слой
                 for (int j = 0; j < Layers[i].countY; j++)
                 {
                     s = 0;

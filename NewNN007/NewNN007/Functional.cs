@@ -26,7 +26,7 @@ namespace NewNN007
 
             using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
             {
-                int count2 = 0, i = 0;
+                int count2 = 0;
 
                 while ((text = sr.ReadLine()) != null)
                 {
@@ -85,9 +85,9 @@ namespace NewNN007
         //    foreach (double[] vector in list)
         //    {
         //        result[x] = new double[vector.Length];
-        //        for (int i = 0; i < result[x].Length; i++)
+        //        for (int strTS = 0; strTS < result[x].Length; strTS++)
         //        {
-        //            result[x][i] = vector[i];
+        //            result[x][strTS] = vector[strTS];
         //        }
         //    }
         //    return result;
