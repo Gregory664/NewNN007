@@ -18,7 +18,7 @@ namespace NewNN007
         
         NeuralNW NET;
         String path = "Network.nw";
-
+        bool g;
         double[][] TS;    
        
 
@@ -42,6 +42,7 @@ namespace NewNN007
 
         private void button1_Click(object sender, EventArgs e)
         {
+            g = true;
             try
             {
                 NET = new NeuralNW(path, 3, 3);
@@ -49,8 +50,23 @@ namespace NewNN007
                 //NET.ActivateErrorMass(TS);
                 NET.GetMeanAtributes(TS);
                 NET.ActivateGammaStruct(TS.Length);
+                NET.InitializeWeights(TS);
+                int count = 1000;
+                for (int i = 0; i < count; i++)
+                {
+                    NET.EraseErrors();
+                    double[] err = NET.Learn(TS);
+                    for (int j = 0; j < err.Length; j++)
+                    {
+                        textBox1.AppendText("ошибка = " + err[j].ToString() + "\r\n");
+                        
+                    }
+                    textBox1.AppendText("!!!\r\n");
+                    
+                }
+                    
+                    
                 
-                NET.Learn(TS);
             }
             catch (Exception ex)
             {
@@ -76,6 +92,11 @@ namespace NewNN007
                     
             //    //}
             //}
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            g = false;
         }
 
         

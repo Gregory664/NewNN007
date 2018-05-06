@@ -121,26 +121,24 @@ namespace ClassLibraryNeuralNetworks
     public class Gamma
     {
         
-        public List<double[]> GammaValues = new List<double[]>();
+        public List<double[]> GammaValues;
 
-        double[] GammaOfErrors;
-        
+        double gammaOFerrors = 0.0;
+
+        public double GammaOfErrors
+        {
+            get { return gammaOFerrors; }
+            set { gammaOFerrors = value; }
+        }        
 
         public Gamma(LayerNW[] Layers)
         {
+            GammaValues = new List<double[]>();
             for (int i = 0; i < Layers.Length; i++)
 			{
                 GammaValues.Add(new double[Layers[i].countX]);
 			}
         }
-
-        public Gamma(int count)
-        {
-            GammaOfErrors = new double[4];
-        }
-
-          
-        
     }
 
    
@@ -159,6 +157,8 @@ namespace ClassLibraryNeuralNetworks
         double[][] NETOUT;  // NETOUT[countLayers + 1][]
         double[][] DELTA;   // NETOUT[countLayers    ][]       
         double[] ERRORS;
+        double[] DISCRIMINANT;
+        double[] ACTIVATE_FUNCTIONS;
         Dictionary<double, double[]> PROBABILITY;
         
         ///Ниже представлены наши методы
@@ -175,9 +175,14 @@ namespace ClassLibraryNeuralNetworks
             OpenNW(FileName);
             ActivateClasses(numberOfDecisionClasses, CountOfAtributes);
             ActivateProbability(numberOfDecisionClasses);
-            
-            
-            
+            DISCRIMINANT = new double[Layers[0].countY];
+            InitializeZeroWeights();
+            IntializeACTIVATE_FUNCTIONS();
+        }
+
+        private void IntializeACTIVATE_FUNCTIONS()
+        {
+            ACTIVATE_FUNCTIONS = new double[Layers[0].countY];
         }
 
         /// <summary>
@@ -275,17 +280,7 @@ namespace ClassLibraryNeuralNetworks
             ERRORS = new double[length];
         }
     
-        public double Gamma(double[][] TS)
-        {
-            double result = 0.0;
-            for (int i = 0; i < Layers.Length; i++)
-            {
-
-            }
-
-            return result;
-        }
-
+        
         /// <summary>
         /// Нахождение корреляции по методу Л.Гудмена и Е.Краскала
         ///
@@ -304,8 +299,8 @@ namespace ClassLibraryNeuralNetworks
                 
                 for (int j = 0 + count; j < pairs.Length - 1; j++)
                 {
-                    if (pairs[i][0] >= pairs[j + 1][0] && pairs[i][1] >= pairs[j + 1][1]) { countS++; }
-                    else if (pairs[i][0] <= pairs[j + 1][0] && pairs[i][1] <= pairs[j + 1][1]) { countS++; }
+                    if (pairs[i][0] > pairs[j + 1][0] && pairs[i][1] > pairs[j + 1][1]) { countS++; }
+                    else if (pairs[i][0] < pairs[j + 1][0] && pairs[i][1] < pairs[j + 1][1]) { countS++; }
                     else countD++;
                 } 
                 count++;
@@ -317,49 +312,255 @@ namespace ClassLibraryNeuralNetworks
             double gamma = a / b;
             return gamma;            
 
-        }   
+        }
+
+        private void InitializeZeroWeights()
+        {
+            for (int k = 0; k < Layers.Length; k++)
+            {
+                for (int i = 0; i < Layers[k].countX; i++)
+                {
+                    for (int j = 0; j < Layers[k].countY; j++)
+                    {
+                        Layers[k][i, j] = 0.0;
+                    }
+                }
+            }
+        }
+
+        public void InitializeWeights(double[][] TS)
+        {
+            for (int k = 0; k < Layers.Length; k++)
+            {
+                for (int i = 0; i < Layers[k].countX; i++)
+                {
+                    double[] currentAttributes = new double[TS.Length];
+
+                    for (int a = 0; a < TS.Length; a++)
+                    {
+                        currentAttributes[a] = TS[a][i];
+                    }
+
+                    for (int j = 0; j < Layers[k].countY; j++)
+                    {
+                        double[] atribute_minus_avg = new double[currentAttributes.Length];
+
+                        for (int a = 0; a < currentAttributes.Length; a++)
+                        {
+                            atribute_minus_avg[a] = currentAttributes[a] - Classes[j].MeansAtributes[i];
+                        }
+
+                        double[][] massForGamma = new double[currentAttributes.Length][];
+
+                        for (int a = 0; a < TS.Length; a++)
+                        {
+                            massForGamma[a] = new double[2];
+                            double classLabel = TS[a][TS[a].Length - 1];
+                            double[] temp = new double[Layers[k].countY];
+                            foreach (KeyValuePair<double, double[]> entry in PROBABILITY)
+                            {
+                                if (entry.Key == classLabel)
+                                {
+                                    temp = entry.Value;
+                                }
+                            }
+                            massForGamma[a][0] = atribute_minus_avg[a];
+                            massForGamma[a][1] = temp[j];
+
+                        }
+
+                        Layers[k][i, j] = CalcGamma(massForGamma);
+                    }
+                }
+            }
+        }
+
+        private double Max(double[] mass)
+        {
+            Array.Sort(mass);
+            double Max = mass[mass.Length - 1];
+            return Max;
+            
+        }
 
         /// <summary>
         /// Наш метод обучения
         /// </summary>
         /// <param name="TS">Обучающая выборка</param>
-        public void Learn(double[][] TS)
+        public double[] Learn(double[][] TS)
         {
+            
+            
 
-            for (int strTS = 0; strTS < TS.Length; strTS++)
+            //Расчет линейного дискриминанта
+            for (int t = 0; t < TS.Length; t++)
             {
-                double[] ts = new double[TS[0].Length - 1];
 
-                for (int j = 0; j < ts.Length; j++)
+                double[] ts = new double[TS[t].Length];
+                ts = TS[t];
+
+                for (int l = 0; l < Layers[0].countX; l++)
                 {
-                    ts[j] = TS[strTS][j];
+                    NETOUT[0][l] = ts[l];
                 }
-                GetOUT(TS[strTS]);//рассчитываем выход сети для текущей выборки
-                ERRORS[strTS] = CalcError(TS[strTS]);//рассчитываем ошибку для текущей выборки
 
-                //делаем проход по всем уровням для нахождения корреляции
-                for (int k = 0; k < CountLayers; k++)
+                for (int i = 0; i < Layers[0].countY; i++)
                 {
-                    //Layers[k].countX - кол-во входных нейронов на текущем уровне (k)
-                    for (int i = 0; i < Layers[k].countX; i++)
+                    double U = 0.0;
+                    for (int j = 0; j < Layers[0].countX; j++)
                     {
-                        //массив пар, равен кол-ву выходных нейронов на текущем уровне
-                        double[][] mass = new double[Layers[k].countY][];
-                        //проход по каждый вх нейрон (i) -> каждый вых нейрон (j) на текущем уровне
-                        for (int j = 0; j < Layers[k].countY; j++)
-                        {
-                            mass[j] = new double[2];//размер 2 - первое число это вход * вес связи, второе - выход нейрона на той же связи
-                            mass[j][0] = NETOUT[k][i] * Layers[k][i, j];//вход * вес связи
-                            mass[j][1] = NETOUT[k + 1][j];//выход нейрона на той же связи
-                        }
-                        //рассчет корреляции для каждого вх нейрона на текущем уровне
-                        GammaNeuron[strTS].GammaValues[k][i] = CalcGamma(mass);
+                        double num1 = NETOUT[0][j] * Layers[0][j, i];
+                        int label = Convert.ToInt32(TS[t][TS[t].Length - 1] - 1);
+                        double num2 = Math.Pow(NETOUT[0][j] - Classes[label].MeansAtributes[i], 2);
+                        U += (num1 / num2);
+                    }
+                    DISCRIMINANT[i] = U;
+                }
 
+                for (int l = 0; l < DISCRIMINANT.Length; l++)
+                {
+                    //double s = 1.0 / (1 + Math.Exp(-DISCRIMINANT[l]));
+                    
+                    double W = 1.7159 * Math.Tanh(DISCRIMINANT[l] * 2 / 3);
+                    ACTIVATE_FUNCTIONS[l] = W;
+                    NETOUT[1][l] = W;
+                }
+
+                double[] temp = new double[Layers[0].countY];
+                foreach (KeyValuePair<double, double[]> entry in PROBABILITY)
+                {
+                    if (entry.Key == ts[ts.Length - 1])
+                    {
+                        temp = entry.Value;
                     }
                 }
-                
+
+                for (int l = 0; l < NETOUT[1].Length; l++)
+                {
+                    double G = 0.0;
+
+                    double num1 = Math.Exp(ACTIVATE_FUNCTIONS[l]) - Max(ACTIVATE_FUNCTIONS);
+                    double num2 = 0.0;
+                    for (int b = 0; b < ACTIVATE_FUNCTIONS.Length; b++)
+                    {
+                        num2 += ACTIVATE_FUNCTIONS[b] - Max(ACTIVATE_FUNCTIONS);
+                    }
+                    G = num1 / num2;
+
+                    ERRORS[t] += temp[l] - G;
+
+                }
             }
-            int x = 0;
+
+            //change weights
+            for (int i = 0; i < Layers[0].countX; i++)
+            {
+                double[] currentAttributes = new double[TS.Length];
+
+                for (int a = 0; a < TS.Length; a++)
+                {
+                    currentAttributes[a] = TS[a][i];
+                }
+                
+                for (int j = 0; j < Layers[0].countY; j++)
+                {                    
+
+                    double[] atribute_minus_avg = new double[currentAttributes.Length];
+
+                    for (int a = 0; a < currentAttributes.Length; a++)
+                    {
+                        atribute_minus_avg[a] = currentAttributes[a] - Classes[j].MeansAtributes[i];
+                    }
+
+                    double[][] massForGamma = new double[currentAttributes.Length][];
+                    double[][] massForErrors = new double[currentAttributes.Length][];
+
+                    for (int a = 0; a < TS.Length; a++)
+                    {
+                        massForGamma[a] = new double[2];
+                        double classLabel = TS[a][TS[a].Length - 1];
+                        double[] temp = new double[Layers[0].countY];
+                        foreach (KeyValuePair<double, double[]> entry in PROBABILITY)
+                        {
+                            if (entry.Key == classLabel)
+                            {
+                                temp = entry.Value;
+                            }
+                        }
+                        massForGamma[a][0] = atribute_minus_avg[a];
+                        massForGamma[a][1] = temp[j];
+
+                        massForErrors[a] = new double[2];
+                        massForErrors[a][0] = atribute_minus_avg[a];
+                        massForErrors[a][1] = ERRORS[a];
+                    }
+
+                    double chislitel = CalcGamma(massForErrors) * CalcGamma(massForGamma);
+                    double znameenatel = 0.0;
+                    //////////////////////////////////
+                    for (int a = 0; a < Classes[0].GetCountOfAtributes; a++)
+                    {
+                        double[] current = new double[TS.Length];
+
+                        for (int z = 0; z < TS.Length; z++)
+                        {
+                            current[z] = TS[z][a];
+                        }
+
+                        double[] atribute_minus_AVG = new double[currentAttributes.Length];
+
+                        for (int m = 0; m < current.Length; m++)
+                        {
+                            atribute_minus_AVG[m] = current[m] - Classes[j].MeansAtributes[a];
+                        }
+
+                        double[][] massCurrentForGamma = new double[current.Length][];
+                        double[][] massCurrentForErrors = new double[current.Length][];
+
+                        for (int v = 0; v < TS.Length; v++)
+                        {
+                            massCurrentForGamma[v] = new double[2];
+                            double classLabel = TS[v][TS[v].Length - 1];
+                            double[] temp = new double[Layers[0].countY];
+                            foreach (KeyValuePair<double, double[]> entry in PROBABILITY)
+                            {
+                                if (entry.Key == classLabel)
+                                {
+                                    temp = entry.Value;
+                                }
+                            }
+                            massCurrentForGamma[v][0] = atribute_minus_AVG[v];
+                            massCurrentForGamma[v][1] = temp[j];
+
+                            massCurrentForErrors[v] = new double[2];
+                            massCurrentForErrors[v][0] = atribute_minus_AVG[v];
+                            massCurrentForErrors[v][1] = ERRORS[v];
+                        }
+                        znameenatel += CalcGamma(massCurrentForErrors) * CalcGamma(massCurrentForGamma);
+                    }
+
+                    Layers[0][i, j] = chislitel / znameenatel;  
+                }
+                        
+            }
+
+            return ERRORS;
+            
+        }
+
+        public void EraseErrors()
+        {
+            for (int i = 0; i < ERRORS.Length; i++)
+            {
+                ERRORS[i] = 0.0;
+            }
+        }
+        public double AverageArray(double[] mass)
+        {
+            double result = 0.0;
+            foreach (double item in mass) { result += item; }
+            return result;
+
         }
 
         public void ActivateErrorMass(double[][] TS)
@@ -382,10 +583,10 @@ namespace ClassLibraryNeuralNetworks
 
             for (int i = 0; i < Y.Length; i++)
             {
-                kErr += (Y[i] - NETOUT[countLayers][i]);
+                kErr += Math.Pow(Y[i] - NETOUT[countLayers][i], 2);
             }
             
-            return kErr;
+            return kErr * 0.5;
 
         }
 
@@ -562,6 +763,8 @@ namespace ClassLibraryNeuralNetworks
                 O = NETOUT[countLayers][j];
                 DELTA[countLayers - 1][j] = (Y[j] - O) * O * (1 - O);
             }
+
+            
 
             // Перебираем все слои начиная споследнего 
             // изменяя веса и вычисляя дельта для скрытого слоя
@@ -778,7 +981,7 @@ namespace ClassLibraryNeuralNetworks
             return sizeNW;
         }
 
-        // Возвращает num-й слой Нейронной сети
+        // Возвращает classLabel-й слой Нейронной сети
         public LayerNW Layer(int num)
         {
             return Layers[num]; 
