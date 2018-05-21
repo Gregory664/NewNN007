@@ -101,12 +101,9 @@ namespace ClassLibraryNeuralNetworks
 
         public int GetCountOfAtributes
         {
-            get
-            {
-                return MeansAtributes.Length;
-            }
+            get { return MeansAtributes.Length; }
         }
-
+        
         /// <summary>
         /// Инициализирует массив средних значений атрибутов
         /// </summary>

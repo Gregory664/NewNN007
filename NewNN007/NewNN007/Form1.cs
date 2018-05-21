@@ -17,7 +17,7 @@ namespace NewNN007
     {
         
         NeuralNW NET;
-        String path = "Network.nw";
+        String path = "Network2.nw";
         bool g;
         double[][] TS;    
        
@@ -35,7 +35,7 @@ namespace NewNN007
 
         private void LoadTs_Click(object sender, EventArgs e)
         {
-            TS = Functional.getTS("TS.txt");
+            TS = Functional.getTS("TS3.txt");
                                 
             
         }
@@ -45,13 +45,13 @@ namespace NewNN007
             g = true;
             try
             {
-                NET = new NeuralNW(path, 3, 3);
+                NET = new NeuralNW(path, 2, 9);
                 //NET.getAverageAtributes(TS);
                 //NET.ActivateErrorMass(TS);
                 NET.GetMeanAtributes(TS);
                 NET.ActivateGammaStruct(TS.Length);
                 NET.InitializeWeights(TS);
-                int count = 1000;
+                int count = 10;
                 for (int i = 0; i < count; i++)
                 {
                     NET.EraseErrors();
