@@ -306,7 +306,7 @@ namespace ClassLibraryNeuralNetworks
             ////мера Гамма Л.Гудмена и Е.Краскала
             double a = countS - countD;
             double b = countS + countD;
-            double gamma = a / b;
+            double gamma = Math.Abs(a / b);
             return gamma;            
 
         }
@@ -418,7 +418,8 @@ namespace ClassLibraryNeuralNetworks
                 {
                     //double s = 1.0 / (1 + Math.Exp(-DISCRIMINANT[l]));
                     
-                    double W = 1.7159 * Math.Tanh(DISCRIMINANT[l] * 2 / 3);
+                    //double W = 1.7159 * Math.Tanh(DISCRIMINANT[l] * 2 / 3);
+                    double W = Math.Tanh(DISCRIMINANT[l] * 0.01);
                     ACTIVATE_FUNCTIONS[l] = W;
                     NETOUT[1][l] = W;
                 }
