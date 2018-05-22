@@ -11,6 +11,7 @@ using ClassLibraryNeuralNetworks;
 using System.IO;
 using System.Collections;
 using System.Threading;
+using System.Diagnostics;
 
 namespace NewNN007
 {
@@ -102,15 +103,18 @@ namespace NewNN007
                         
                         NET.EraseErrors();
 
+                        Stopwatch time = new Stopwatch();
+                        time.Start();
                         double[] err = NET.Learn(TS);
-
+                        time.Stop();
                         for (int j = 0; j < err.Length; j++)
                         {
                             string text = string.Format("Выборка № {0}. Error: {1} \r\n", (j + 1), err[j].ToString());
                             textBox1.AppendText(text);
                         }
-
+                        double timer = time.ElapsedMilliseconds * 0.001;
                         textBox1.AppendText("Цикл обучения завершен. \r\n");
+                        textBox1.AppendText("Времени затрачено: " + timer + " секунд \r\n");
                         textBox1.AppendText("Количество итераций: " + (i + 1));
                     }
                     
