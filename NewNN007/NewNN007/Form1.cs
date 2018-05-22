@@ -35,8 +35,7 @@ namespace NewNN007
 
         private void LoadTs_Click(object sender, EventArgs e)
         {
-            TS = Functional.getTS("TS3.txt");
-                                
+            TS = Functional.getTS("TS3.txt");                               
             
         }
 
@@ -46,8 +45,6 @@ namespace NewNN007
             try
             {
                 NET = new NeuralNW(path, 2, 9);
-                //NET.getAverageAtributes(TS);
-                //NET.ActivateErrorMass(TS);
                 NET.GetMeanAtributes(TS);
                 NET.ActivateGammaStruct(TS.Length);
                 NET.InitializeWeights(TS);
@@ -61,8 +58,7 @@ namespace NewNN007
                         textBox1.AppendText("ошибка = " + err[j].ToString() + "\r\n");
                         
                     }
-                    textBox1.AppendText("!!!\r\n");
-                    
+                    textBox1.AppendText("!!!\r\n");                    
                 }
                     
                     
@@ -77,21 +73,7 @@ namespace NewNN007
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //int currPos = 0;
-            //double kErr = 1E256;
-            //double kErrNorm = 0.01;
-            //double kLern = 0.1;
-
-            //while (kErr > kErrNorm)
-            //{
-            //    kErr = 0;
-            //    //for (currPos = 0; currPos < NET.getHidenCount; currPos++)
-            //    //{                   
-            //    //    //string s;
-            //    //    //NET.StartLayes(NET, input, output, decision, MeansAtributes);
-                    
-            //    //}
-            //}
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
