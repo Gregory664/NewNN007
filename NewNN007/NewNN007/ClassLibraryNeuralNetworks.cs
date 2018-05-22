@@ -423,6 +423,13 @@ namespace ClassLibraryNeuralNetworks
             
         }
 
+        public double[] TEST(double[] ts)
+        {
+            ///???
+            double[] test = new double[2];
+            return test;
+        }
+
         private void ChangeWeight(double[][] TS)
         {
             for (int i = 0; i < Layers[0].countX; i++)
