@@ -520,7 +520,7 @@ namespace ClassLibraryNeuralNetworks
                         znameenatel += CalcGamma(massForErrors) * CalcGamma(massForGamma);
                     }
 
-                    Layers[0][i, j] = chislitel / znameenatel;
+                    Layers[0][i, j] = chislitel;// / znameenatel;
                 }
 
             }
@@ -539,9 +539,10 @@ namespace ClassLibraryNeuralNetworks
                 for (int j = 0; j < Layers[0].countX; j++)
                 {
                     double num1 = NETOUT[0][j] * Layers[0][j, i];
-                    int label = Convert.ToInt32(TS[t][TS[t].Length - 1] - 1);
-                    double num2 = Math.Pow(NETOUT[0][j] - Classes[label].MeansAtributes[i], 2);
-                    U += (num1 / num2);
+                    //int label = Convert.ToInt32(TS[t][TS[t].Length - 1] - 1);
+                    //double num2 = Math.Pow(NETOUT[0][j] - Classes[label].MeansAtributes[i], 2);
+                    //U += (num1 / num2);
+                    U += num1;
                 }
                 DISCRIMINANT[i] = U;
             }
@@ -551,18 +552,18 @@ namespace ClassLibraryNeuralNetworks
         {
             for (int l = 0; l < NETOUT[NETOUT.Length - 1].Length; l++)
             {
-                double G = 0.0;
+                //double G = 0.0;
 
-                double num1 = Math.Exp(ACTIVATE_FUNCTIONS[l]) - Max(ACTIVATE_FUNCTIONS);
-                double num2 = 0.0;
-                for (int b = 0; b < ACTIVATE_FUNCTIONS.Length; b++)
-                {
-                    num2 += ACTIVATE_FUNCTIONS[b] - Max(ACTIVATE_FUNCTIONS);
-                }
-                G = num1 / num2;
+                //double num1 = Math.Exp(ACTIVATE_FUNCTIONS[l]) - Max(ACTIVATE_FUNCTIONS);
+                //double num2 = 0.0;
+                //for (int b = 0; b < ACTIVATE_FUNCTIONS.Length; b++)
+                //{
+                //    num2 += ACTIVATE_FUNCTIONS[b] - Max(ACTIVATE_FUNCTIONS);
+                //}
+                //G = num1 / num2;
 
-                ERRORS[t] += probability[l] - G;
-
+                //ERRORS[t] += probability[l] - G;
+                ERRORS[t] += Math.Pow(probability[l] - ACTIVATE_FUNCTIONS[l], 2) / 2;
             }
         }
 
@@ -571,7 +572,7 @@ namespace ClassLibraryNeuralNetworks
         {
             for (int l = 0; l < DISCRIMINANT.Length; l++)
             {
-                double W = Math.Tanh(DISCRIMINANT[l] * 0.01);
+                double W = Math.Tanh(DISCRIMINANT[l] * 2.0 / 3.0);
                 ACTIVATE_FUNCTIONS[l] = W;
                 NETOUT[1][l] = W;
             }
