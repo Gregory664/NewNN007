@@ -426,8 +426,31 @@ namespace ClassLibraryNeuralNetworks
         public double[] TEST(double[] ts)
         {
             ///???
-            double[] test = new double[2];
-            return test;
+            double[] answer = new double[NETOUT[1].Length];
+
+            for (int l = 0; l < Layers[0].countX; l++)
+            {
+                NETOUT[0][l] = ts[l];
+            }
+
+            for (int j = 0; j < Layers[0].countY; j++)
+            {
+                double summ = 0.0;
+                for (int i = 0; i < Layers[0].countX; i++)
+                {
+                    summ += NETOUT[0][i] * Layers[0][i,j];
+                }
+                NETOUT[1][j] = Math.Tanh(summ * 2.0 / 3.0);           
+                
+            }
+
+            for (int i = 0; i < answer.Length; i++)
+            {
+                answer[i] = NETOUT[1][i];
+            }
+
+
+            return answer;
         }
 
         private void ChangeWeight(double[][] TS)

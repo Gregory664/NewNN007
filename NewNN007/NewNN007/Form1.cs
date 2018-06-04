@@ -20,8 +20,14 @@ namespace NewNN007
         
         NeuralNW NET;
         String path, testPath;
-        bool pathNW = false, start;
-        double[][] TS;    
+        bool pathNW = false, start, pathTS = false;
+        double[][] TS;
+        double[] testTS;
+
+        private void method2()
+        {
+            if (pathNW && pathTS) startButton.Enabled = true;
+        }
        
 
         public Form1()
@@ -30,11 +36,13 @@ namespace NewNN007
             //this.Size = new Size(560, 560);
             ////this.Width = 745;
             ////this.Height = 560;
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            Method1(true);
+            startButton.Enabled = false;
             
            
 
@@ -49,7 +57,8 @@ namespace NewNN007
                     tsPath.Text = openFileDialog.FileName;
                     TS = Functional.getTS(openFileDialog.FileName);   
                 }
-            }                                       
+            }
+            pathTS = true;          
             
         }
 
@@ -132,8 +141,23 @@ namespace NewNN007
             
         }
 
+        private void Method1(bool flag)
+        {
+            textBox4.ReadOnly = flag;
+            textBox5.ReadOnly = flag;
+            textBox6.ReadOnly = flag;
+            textBox7.ReadOnly = flag;
+            textBox8.ReadOnly = flag;
+            textBox9.ReadOnly = flag;
+            textBox10.ReadOnly = flag;
+            textBox11.ReadOnly = flag;
+            textBox12.ReadOnly = flag;
+            
+        }
+
         private void button3_Click_1(object sender, EventArgs e)
         {
+           
             using (OpenFileDialog open = new OpenFileDialog())
             {
                 if (open.ShowDialog() == DialogResult.OK)
@@ -142,22 +166,42 @@ namespace NewNN007
                     textBox2.Text = testPath;
                 }
             }
+
+            
+            using (StreamReader sr = new StreamReader(testPath))
+            {
+                string[] tmp = sr.ReadLine().Split(';');
+                testTS = new double[tmp.Length];
+                for (int i = 0; i < tmp.Length; i++) { testTS[i] = Double.Parse(tmp[i]); }
+            }
+
+            textBox4.Text = testTS[0].ToString();
+            textBox5.Text = testTS[1].ToString();
+            textBox6.Text = testTS[2].ToString();
+            textBox7.Text = testTS[3].ToString();
+            textBox8.Text = testTS[4].ToString();
+            textBox9.Text = testTS[5].ToString();
+            textBox10.Text = testTS[6].ToString();
+            textBox11.Text = testTS[7].ToString();
+            textBox12.Text = testTS[8].ToString();
+
+            Method1(false);
+               
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            double[] ts;
-            using (StreamReader sr = new StreamReader(testPath))
-            {
-                string[] tmp = sr.ReadLine().Split(';');
-                ts = new double[tmp.Length];
-                for (int i = 0; i < tmp.Length; i++) { ts[i] = Double.Parse(tmp[i]); }
-            }
-            double[] test = NET.TEST(ts);////????????
-            
 
-            //Проверка работы сети
-           // NET.NetOUT
+            double[] answer = NET.TEST(this.testTS);
+            for (int i = 0; i < answer.Length; i++)
+            {
+                textBox3.AppendText(String.Format("Выходной нейрон: {0} --- {1} \n", i+1 , Math.Round(answer[i], 2)));
+            }
+        }
+
+        private void countFOR_TextChanged(object sender, EventArgs e)
+        {
+            method2();
         }
 
         
