@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClassLibraryNeuralNetworks;
 using System.IO;
 using System.Collections;
 using System.Threading;

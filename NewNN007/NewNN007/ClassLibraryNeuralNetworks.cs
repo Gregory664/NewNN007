@@ -3,9 +3,10 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
+using NewNN007.source;
 
 
-namespace ClassLibraryNeuralNetworks
+namespace NewNN007
 {
 
     // Структура дря разбиения переменных типа int и double на байты
@@ -37,55 +38,7 @@ namespace ClassLibraryNeuralNetworks
     }
 
     // Класс - слой нейросети
-    public class LayerNW
-    {
-        double[,] Weights;
-        int cX, cY;
-
-        // Заполняем веса случайными числами
-        public void GenerateWeights()
-        {
-            Random rnd = new Random();
-            for (int i = 0; i < cX; i++)
-            {
-                for (int j = 0; j < cY; j++)
-                {
-                    Weights[i, j] = rnd.NextDouble() - 0.5;
-                }
-            }
-        }
-
-        // Выделяет память под веса
-        protected void GiveMemory()
-        {
-            Weights = new double[cX, cY];
-        }
-
-        // Конструктор с параметрами. передается количество входных и выходных нейронов
-        public LayerNW(int countX, int countY)
-        {
-            cX = countX;
-            cY = countY;
-            GiveMemory();
-        }
-
-        public int countX
-        {
-            get { return cX; }
-        }
-
-        public int countY
-        {
-            get { return cY; }
-        }
-
-        public double this[int row, int col]
-        {
-            get { return Weights[row, col]; }
-            set { Weights[row, col] = value; }
-        }
-
-    }
+    
 
     /// <summary> 
     /// Структура классов принятия решений
@@ -133,7 +86,7 @@ namespace ClassLibraryNeuralNetworks
             GammaValues = new List<double[]>();
             for (int i = 0; i < Layers.Length; i++)
 			{
-                GammaValues.Add(new double[Layers[i].countX]);
+                GammaValues.Add(new double[Layers[i].getCountX]);
 			}
         }
     }   
@@ -168,14 +121,14 @@ namespace ClassLibraryNeuralNetworks
             OpenNW(FileName);
             ActivateClasses(numberOfDecisionClasses, CountOfAtributes);
             ActivateProbability(numberOfDecisionClasses);
-            DISCRIMINANT = new double[Layers[0].countY];
+            DISCRIMINANT = new double[Layers[0].getCountY];
             InitializeZeroWeights();
             IntializeACTIVATE_FUNCTIONS();
         }
 
         private void IntializeACTIVATE_FUNCTIONS()
         {
-            ACTIVATE_FUNCTIONS = new double[Layers[0].countY];
+            ACTIVATE_FUNCTIONS = new double[Layers[0].getCountY];
         }
 
         /// <summary>
@@ -312,9 +265,9 @@ namespace ClassLibraryNeuralNetworks
         {
             for (int k = 0; k < Layers.Length; k++)
             {
-                for (int i = 0; i < Layers[k].countX; i++)
+                for (int i = 0; i < Layers[k].getCountX; i++)
                 {
-                    for (int j = 0; j < Layers[k].countY; j++)
+                    for (int j = 0; j < Layers[k].getCountY; j++)
                     {
                         Layers[k][i, j] = 0.0;
                     }
@@ -326,7 +279,7 @@ namespace ClassLibraryNeuralNetworks
         {
             for (int k = 0; k < Layers.Length; k++)
             {
-                for (int i = 0; i < Layers[k].countX; i++)
+                for (int i = 0; i < Layers[k].getCountX; i++)
                 {
                     double[] currentAttributes = new double[TS.Length];
 
@@ -335,7 +288,7 @@ namespace ClassLibraryNeuralNetworks
                         currentAttributes[a] = TS[a][i];
                     }
 
-                    for (int j = 0; j < Layers[k].countY; j++)
+                    for (int j = 0; j < Layers[k].getCountY; j++)
                     {
                         double[] atribute_minus_avg = new double[currentAttributes.Length];
 
@@ -378,7 +331,7 @@ namespace ClassLibraryNeuralNetworks
         /// <returns></returns>
         public double[] GetPropabilityMass(double label)
         {
-            double[] probability = new double[Layers[0].countY];
+            double[] probability = new double[Layers[0].getCountY];
             foreach (KeyValuePair<double, double[]> entry in PROBABILITY)
             {
                 if (entry.Key == label) { probability = entry.Value; }
@@ -398,7 +351,7 @@ namespace ClassLibraryNeuralNetworks
                 double[] ts = new double[TS[t].Length];
                 ts = TS[t];
 
-                for (int l = 0; l < Layers[0].countX; l++)
+                for (int l = 0; l < Layers[0].getCountX; l++)
                 {
                     NETOUT[0][l] = ts[l];
                 }
@@ -428,15 +381,15 @@ namespace ClassLibraryNeuralNetworks
             ///???
             double[] answer = new double[NETOUT[1].Length];
 
-            for (int l = 0; l < Layers[0].countX; l++)
+            for (int l = 0; l < Layers[0].getCountX; l++)
             {
                 NETOUT[0][l] = ts[l];
             }
 
-            for (int j = 0; j < Layers[0].countY; j++)
+            for (int j = 0; j < Layers[0].getCountY; j++)
             {
                 double summ = 0.0;
-                for (int i = 0; i < Layers[0].countX; i++)
+                for (int i = 0; i < Layers[0].getCountX; i++)
                 {
                     summ += NETOUT[0][i] * Layers[0][i,j];
                 }
@@ -455,9 +408,9 @@ namespace ClassLibraryNeuralNetworks
 
         private void ChangeWeight(double[][] TS)
         {
-            for (int i = 0; i < Layers[0].countX; i++)
+            for (int i = 0; i < Layers[0].getCountX; i++)
             {
-                for (int j = 0; j < Layers[0].countY; j++)
+                for (int j = 0; j < Layers[0].getCountY; j++)
                 {
                     //Массив всех атрибутов для текущего нейрона
                     double[] currentAttributes = new double[TS.Length];
@@ -533,10 +486,10 @@ namespace ClassLibraryNeuralNetworks
         /// <param name="t"></param>
         private void CalcDiscriminant(double[][] TS, int t)
         {
-            for (int i = 0; i < Layers[0].countY; i++)
+            for (int i = 0; i < Layers[0].getCountY; i++)
             {
                 double U = 0.0;
-                for (int j = 0; j < Layers[0].countX; j++)
+                for (int j = 0; j < Layers[0].getCountX; j++)
                 {
                     double num1 = NETOUT[0][j] * Layers[0][j, i];
                     //int label = Convert.ToInt32(TS[t][TS[t].Length - 1] - 1);
@@ -704,8 +657,8 @@ namespace ClassLibraryNeuralNetworks
             countY = CountY1;
             // Извлекаем и записываем сами веса
             for (int r = 0; r < countLayers; r++)
-                for (int p = 0; p < Layers[r].countX; p++)
-                    for (int q = 0; q < Layers[r].countY; q++)
+                for (int p = 0; p < Layers[r].getCountX; p++)
+                    for (int q = 0; q < Layers[r].getCountY; q++)
                     {
                         Layers[r][p, q] = ReadFromArrayDouble(binNW, ref k);
                     }
@@ -724,14 +677,14 @@ namespace ClassLibraryNeuralNetworks
             if (countLayers <= 0)
                 return;
 
-            WriteInArray(binNW, ref k, Layers[0].countX);
+            WriteInArray(binNW, ref k, Layers[0].getCountX);
             for (int i = 0; i < countLayers; i++)
-                WriteInArray(binNW, ref k, Layers[i].countY);
+                WriteInArray(binNW, ref k, Layers[i].getCountY);
 
             // Зпаисвыаем сами веса
             for (int r = 0; r < countLayers; r++)
-                for (int p = 0; p < Layers[r].countX; p++)
-                    for (int q = 0; q < Layers[r].countY; q++)
+                for (int p = 0; p < Layers[r].getCountX; p++)
+                    for (int q = 0; q < Layers[r].getCountY; q++)
                     {
                         WriteInArray(binNW, ref k, Layers[r][p, q]);
                     }
@@ -971,16 +924,16 @@ namespace ClassLibraryNeuralNetworks
         {
             double s;
 
-            for (int j = 0; j < Layers[0].countX; j++)
+            for (int j = 0; j < Layers[0].getCountX; j++)
                 NETOUT[0][j] = inX[j];
 
             for (int i = 0; i < lastLayer; i++)
             {
                 // размерность столбца проходящего через strTS-й слой
-                for (int j = 0; j < Layers[i].countY; j++)
+                for (int j = 0; j < Layers[i].getCountY; j++)
                 {
                     s = 0;
-                    for (int k = 0; k < Layers[i].countX; k++)
+                    for (int k = 0; k < Layers[i].getCountX; k++)
                     {
                         s += Layers[i][k, j] * NETOUT[i][k];
                     }
@@ -1006,7 +959,7 @@ namespace ClassLibraryNeuralNetworks
             int sizeNW = sizeof(int) * (countLayers + 2);
             for (int i = 0; i < countLayers; i++)
             {
-                sizeNW += sizeof(double) * Layers[i].countX * Layers[i].countY;
+                sizeNW += sizeof(double) * Layers[i].getCountX * Layers[i].getCountY;
             }
             return sizeNW;
         }
