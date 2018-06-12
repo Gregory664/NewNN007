@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="file:///C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO 11.0/COMMON7/IDE/EXTENSIONS/MICROSOFT/ARCHITECTURE TOOLS/EXTENSIBILITY/Logging/ReverseEngineeringLog.xslt"?>
+<Log xmlns="http://schemas.microsoft.com/VisualStudio/2010/CodeGen.RE.Log" Label="Журнал создания кода/преобразования текста">
+  <MessageClass Name="Message" Label="Сообщение" Option="Показывать информационные сообщения" />
+  <MessageClass Name="Warning" Label="Предупреждение" Option="Показывать предупреждения" />
+  <MessageClass Name="Error" Label="Ошибка" Option="Показывать ошибки" />
+  <MessageClass Name="Property" Label="Свойство" Option="Показывать метаданные" />
+  <MessageClass Name="Diagnostic" Label="Сообщение" Option="Показывать диагностические сообщения" />
+  <Message Timestamp="2018-06-12T12:01:11" Importance="High" Text="Реконструирование запущено." />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;6522146a-cb18-480f-b2b5-e5c6cfd54128&quot; -  (ClassifierTemplateParameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;fff55bbc-60e1-4c5b-9b0c-2b91ed7bd935&quot; -  (ClassifierTemplateParameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;Integer&quot; -  (PrimitiveType)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007&quot; -  (Package)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::ClassesNW&quot; -  (Class)   (реконструирован частично - определение не обновлено) " />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::LayerNW&quot; -  (Class)   (реконструирован частично - определение не обновлено) " />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Medium" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW&quot; -  (Class)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ACTIVATE_FUNCTIONS&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ChangeWeight&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ChangeWeight::TS&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::Classes&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeActivateFunction&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeCurrentError&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeCurrentError::probability&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeCurrentError::t&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeDiscriminantes&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeGamma&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeGamma::pairs&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeMeanAttributes&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ComputeMeanAttributes::TS&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::countLayers&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::countX&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::countY&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::DISCRIMINANT&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::EraseErrors&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ERRORS&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::getCountLayers&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::getPropability&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::getPropability::label&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::getX&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::getY&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationActivateFunction&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationClasses&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationClasses::countOfAtributes&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationClasses::numberOfDecisionClasses&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationErrors&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationErrors::length&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationProbabilities&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationProbabilities::numberOfDecisionClasses&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationWeights&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationWeights::TS&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::InitializationZeroWeights&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::Layers&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::Learn&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::Learn::TS&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::NETOUT&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::NeuralNW&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::NeuralNW::CountOfAtributes&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::NeuralNW::FileName&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::NeuralNW::numberOfDecisionClasses&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::OpenNW&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::OpenNW::FileName&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::PROBABILITY&quot; -  (Property)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ReadFromArrayDouble&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ReadFromArrayDouble::mas&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ReadFromArrayDouble::pos&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ReadFromArrayInt&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ReadFromArrayInt::mas&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::ReadFromArrayInt::pos&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::returnSizeNW&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::SaveNW&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::SaveNW::FileName&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::TEST&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::TEST::ts&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::WriteInArray&quot; -  (Operation)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::WriteInArray::mas&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::WriteInArray::pos&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::NewNN007::NeuralNW::WriteInArray::value&quot; -  (Parameter)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System&quot; -  (Package)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System::Byte&quot; -  (Class)   (реконструирован частично - определение не обновлено) " />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System::Collections&quot; -  (Package)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System::Collections::Generic&quot; -  (Package)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System::Collections::Generic::Dictionary&quot; -  (Class)   (реконструирован частично - определение не обновлено) " />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System::Collections::Generic::Dictionary&lt;Double‎, Double‎[]‎&gt;&quot; -  (Class)   (реконструирован частично - определение не обновлено) " />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject2::System::Double&quot; -  (Class)   (реконструирован частично - определение не обновлено) " />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;String&quot; -  (PrimitiveType)" />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="High" Text="Полностью реконструировано (1) типов." />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="High" Text="Частично реконструировано (6) типов.  Эти типы не были включены в исходный выбор, поэтому их полные определения не реконструированы.  Данная пустая операция лишь проверила наличие этих типов в модели UML, поскольку они необходимы для полного описания других элементов." />
+  <Message Timestamp="2018-06-12T12:01:14" Importance="High" Text="Операция реконструирования завершена; ошибок: (0), предупреждений: (0)." />
+</Log>
