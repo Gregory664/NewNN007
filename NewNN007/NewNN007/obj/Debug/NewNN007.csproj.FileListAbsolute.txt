@@ -3,7 +3,6 @@ C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.ex
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.pdb
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.exe
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.pdb
-C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.csprojResolveAssemblyReference.cache
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Form1.resources
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Properties.Resources.resources
 C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.csproj.GenerateResource.Cache
@@ -25,3 +24,5 @@ C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN0
 C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Form1.resources
 C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.Properties.Resources.resources
 C:\Users\Мария\Documents\GitHub\NewNN007\NewNN007\NewNN007\obj\Debug\NewNN007.csproj.GenerateResource.Cache
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.exe.CodeAnalysisLog.xml
+C:\Users\green\Documents\GitHub\NewNN007\NewNN007\NewNN007\bin\Debug\NewNN007.exe.lastcodeanalysissucceeded

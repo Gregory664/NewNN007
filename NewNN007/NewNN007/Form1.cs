@@ -16,10 +16,11 @@ namespace NewNN007
 {
     public partial class Form1 : Form
     {
-        
+
         NeuralNW NET;
         String path, testPath;
-        bool pathNW = false, start, pathTS = false;
+        bool pathNW = false;
+        bool pathTS = false;
         double[][] TS;
         double[] testTS;
 
@@ -27,7 +28,7 @@ namespace NewNN007
         {
             if (pathNW && pathTS) startButton.Enabled = true;
         }
-       
+
 
         public Form1()
         {
@@ -35,15 +36,15 @@ namespace NewNN007
             //this.Size = new Size(560, 560);
             ////this.Width = 745;
             ////this.Height = 560;
-            
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Method1(true);
+            Check(true);
             startButton.Enabled = false;
-            
-           
+
+
 
         }
 
@@ -54,11 +55,11 @@ namespace NewNN007
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     tsPath.Text = openFileDialog.FileName;
-                    TS = Functional.getTS(openFileDialog.FileName);   
+                    TS = getTS(openFileDialog.FileName);
                 }
             }
-            pathTS = true;          
-            
+            pathTS = true;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -73,61 +74,94 @@ namespace NewNN007
                     }
                 }
                 NET = new NeuralNW(path, 2, 9);
-                NET.GetMeanAtributes(TS);
-                NET.ActivateGammaStruct(TS.Length);
-                NET.InitializeWeights(TS);
+                NET.ComputeMeanAttributes(TS);
+                //NET.ActivateGammaStruct(TS.Length);
+                NET.InitializationWeights(TS);
                 pathNW = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Все сломалось!!!!",MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(ex.Message, "Все сломалось!!!!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
             openNWLabel.Text = chech();
-        
+
         }
 
         private string chech()
         {
             return pathNW == true ? "Сеть загружена" : "Сеть не загружена";
         }
-        
+
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
             if (!pathNW)
             {
                 openNWLabel.Text = chech();
             }
             else
             {
-                if(countFOR.Text == "") textBox1.Text = "Введите количество циклов обучения!";
+                if (countFOR.Text == "") textBox1.Text = "Введите количество циклов обучения!";
                 else
                 {
                     int count = Convert.ToInt32(countFOR.Text);
 
+                    double previos_err = 0;
+                   
+                    double countOfStop = 0.01;
                     for (int i = 0; i < count; i++)
                     {
                         textBox1.Text = "";
-                        
+
                         NET.EraseErrors();
 
                         Stopwatch time = new Stopwatch();
                         time.Start();
-                        double[] err = NET.Learn(TS);
+
+                        double[] current_err = NET.Learn(TS);
+                                           
+                        /*
+                         * 
+                         */
                         time.Stop();
-                        for (int j = 0; j < err.Length; j++)
+                        for (int j = 0; j < current_err.Length; j++)
                         {
-                            string text = string.Format("Выборка № {0}. Error: {1} \r\n", (j + 1), err[j].ToString());
+                            string text = string.Format("Выборка № {0}. Error: {1} \r\n", (j + 1), current_err[j].ToString());
                             textBox1.AppendText(text);
                         }
                         double timer = time.ElapsedMilliseconds * 0.001;
                         textBox1.AppendText("Цикл обучения завершен. \r\n");
                         textBox1.AppendText("Времени затрачено: " + timer + " секунд \r\n");
                         textBox1.AppendText("Количество итераций: " + (i + 1));
+                        /*
+                         * 
+                         */
+                        double avg = MassAvg(current_err);
+                        if (i == 0)
+                        {
+                            previos_err = avg;
+                            continue;
+                        }
+                        else
+                        {
+                            double tmp = Math.Abs(avg - previos_err);
+                            if (Math.Abs(avg - previos_err) <= countOfStop) break;
+                            previos_err = avg;
+                        }
                     }
-                    
+
                 }
             }
+        }
+
+        public double MassAvg(double[] mass)
+        {
+            double result = 0;
+            foreach (double number in mass)
+            {
+                result += number;
+            }
+            return (result / mass.Length);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -137,10 +171,10 @@ namespace NewNN007
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            
+
         }
 
-        private void Method1(bool flag)
+        private void Check(bool flag)
         {
             textBox4.ReadOnly = flag;
             textBox5.ReadOnly = flag;
@@ -151,12 +185,12 @@ namespace NewNN007
             textBox10.ReadOnly = flag;
             textBox11.ReadOnly = flag;
             textBox12.ReadOnly = flag;
-            
+
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-           
+
             using (OpenFileDialog open = new OpenFileDialog())
             {
                 if (open.ShowDialog() == DialogResult.OK)
@@ -166,7 +200,7 @@ namespace NewNN007
                 }
             }
 
-            
+
             using (StreamReader sr = new StreamReader(testPath))
             {
                 string[] tmp = sr.ReadLine().Split(';');
@@ -184,8 +218,8 @@ namespace NewNN007
             textBox11.Text = testTS[7].ToString();
             textBox12.Text = testTS[8].ToString();
 
-            Method1(false);
-               
+            Check(false);
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -194,7 +228,7 @@ namespace NewNN007
             double[] answer = NET.TEST(this.testTS);
             for (int i = 0; i < answer.Length; i++)
             {
-                textBox3.AppendText(String.Format("Выходной нейрон: {0} --- {1} \n", i+1 , Math.Round(answer[i], 2)));
+                textBox3.AppendText(String.Format("Выходной нейрон: {0} --- {1} \n", i + 1, Math.Round(answer[i], 2)));
             }
         }
 
@@ -203,8 +237,40 @@ namespace NewNN007
             method2();
         }
 
-        
+        private static double[][] getTS(String path)
+        {
+            String text;
+            double[][] TS;
+            int count = 0;
+            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
+            {
+                while ((text = sr.ReadLine()) != null)
+                {
+                    count++;
+                }
+            }
+            TS = new double[count][];
 
-        
+            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
+            {
+                int count2 = 0;
+
+                while ((text = sr.ReadLine()) != null)
+                {
+                    string[] tmp = text.Split(';');
+                    TS[count2] = new double[tmp.Length];
+                    for (int j = 0; j < tmp.Length; j++)
+                    {
+                        TS[count2][j] = Double.Parse(tmp[j]);
+                    }
+                    count2++;
+                }
+            }
+
+
+            return TS;
+        }
+
+
     }
 }

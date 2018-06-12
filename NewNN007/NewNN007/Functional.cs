@@ -10,73 +10,41 @@ namespace NewNN007
 {
     public static class Functional
     {
-        public static double[][] getTS(String path)
-        {
-            String text;
-            double[][] TS;
-            int count = 0;
-            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
-            {
-                while ((text = sr.ReadLine()) != null)
-                {
-                    count++;
-                }
-            }
-            TS = new double[count][];
-
-            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
-            {
-                int count2 = 0;
-
-                while ((text = sr.ReadLine()) != null)
-                {
-                    string[] tmp = text.Split(';');
-                    TS[count2] = new double[tmp.Length];
-                    for (int j = 0; j < tmp.Length; j++)
-                    {
-                        TS[count2][j] = Double.Parse(tmp[j]);
-                    }
-                    count2++;
-                }
-            }
-
-            
-            return TS;
-        }
+        
 
        
-        public static double[][] getInput(ArrayList TS)
-        {
-            int xp = 0;
-            double[][] list = new double[TS.Count][];
-            foreach (double[] vector in TS)
-            {
+        //public static double[][] getInput(ArrayList TS)
+        //{
+        //    int xp = 0;
+        //    double[][] list = new double[TS.Count][];
+        //    foreach (double[] vector in TS)
+        //    {
                 
-                list[xp] = new double[vector.Length];
-                for (int i = 0; i < list.Length; i++)
-                {
-                    list[xp][i] = vector[i];
-                }
-                xp++;
-            }
-            return list;
-        }
+        //        list[xp] = new double[vector.Length];
+        //        for (int i = 0; i < list.Length; i++)
+        //        {
+        //            list[xp][i] = vector[i];
+        //        }
+        //        xp++;
+        //    }
+        //    return list;
+        //}
 
-        public static double[][] getOutput(ArrayList TS)
-        {
-            int xp = 0;
-            double[][] list = new double[TS.Count][];
-            foreach (double[] vector in TS)
-            {
+        //public static double[][] getOutput(ArrayList TS)
+        //{
+        //    int xp = 0;
+        //    double[][] list = new double[TS.Count][];
+        //    foreach (double[] vector in TS)
+        //    {
 
-                list[xp] = new double[1];
+        //        list[xp] = new double[1];
                 
-                list[xp][0] = vector[vector.Length-1];
+        //        list[xp][0] = vector[vector.Length-1];
                 
-                xp++;
-            }
-            return list;
-        }
+        //        xp++;
+        //    }
+        //    return list;
+        //}
 
         //public static double[][] convertListToDouble(ArrayList list)
         //{
